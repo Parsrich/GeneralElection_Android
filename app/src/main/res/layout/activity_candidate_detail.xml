@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         tools:text="돋보기 기능"
         />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/candidate_info"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -125,8 +125,11 @@
             android:textStyle="bold"
             tools:layout_editor_absoluteX="215dp"
             tools:layout_editor_absoluteY="184dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/candidate_detail_party"
+            app:layout_constraintTop_toBottomOf="@id/candidate_detail_address"
             tools:text=">" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/education_title"
@@ -199,4 +202,4 @@
         android:text="공약 보기"/>
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.constraint.ConstraintLayout>
