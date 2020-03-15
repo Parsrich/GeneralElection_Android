@@ -10,21 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GuideActivity"></activity>
         <activity android:name=".SettingActivity" />
         <activity android:name=".SearchCandidateActivity" />
         <activity android:name=".CandidateDetailActivity" />
-        <activity android:name=".CandidateListActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".CandidateListActivity" />
         <activity android:name=".FindDepth2Activity" />
         <activity android:name=".FindDepth1Activity" />
-        <activity android:name=".MainActivity">
-
+        <activity android:name=".MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/candidateInfoTitle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_weight="4"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+
+        android:textStyle="bold"
+        android:textColor="@color/candidateSearchFontColor"
+        android:background="@color/candidateInfoBackgroundColor"
+        tools:text="test"
+        />
+    <TextView
+        android:id="@+id/candidateInfoContent"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        android:gravity="center_vertical"
+        android:layout_weight="7"
+        android:textStyle="bold"
+        android:textColor="@color/birthFontColor"
+        tools:text="testsafadssadfsa"
+        />
+
+</LinearLayout>
