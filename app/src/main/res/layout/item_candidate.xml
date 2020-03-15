@@ -4,35 +4,49 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="10dp">
+    android:paddingTop="10dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
 
     <ImageView
         android:id="@+id/candidate_img"
-        android:layout_width="97dp"
-        android:layout_height="124dp"
-        android:src="@drawable/ic_launcher_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/candidate_sample"
+        app:layout_constraintDimensionRatio="3:4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/address"/>
 
-        />
+
     <TextView
         android:id="@+id/party"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_corner"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
         android:layout_marginStart="20dp"
-        android:textSize="15sp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         app:layout_constraintLeft_toRightOf="@id/candidate_img"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="행복한 우리당"
+        android:fontFamily="@font/gmarket_sans_medium"
+        android:text="더불어민주당"
         />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="27sp"
+        android:textSize="21sp"
+        android:layout_marginTop="15dp"
         app:layout_constraintLeft_toLeftOf="@id/party"
         app:layout_constraintTop_toBottomOf="@id/party"
-        tools:text="김총선"
+        tools:text="이낙연"
+        android:fontFamily="@font/gmarket_sans_bold"
         />
 
     <TextView
@@ -42,11 +56,18 @@
         app:layout_constraintLeft_toRightOf="@id/candidate_img"
         app:layout_constraintTop_toBottomOf="@id/name"
         app:layout_constraintLeft_toLeftOf="@id/party"
-        tools:text="2002.1.1(100세)"/>
+        android:layout_marginTop="7dp"
+        android:textStyle="normal"
+        android:textSize="17sp"
+        android:fontFamily="@font/gmarket_sans_medium"
+        tools:text="1952.12.20(67세)" />
     <TextView
         android:id="@+id/gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/gmarket_sans_medium"
+        android:textSize="17sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/birth"
         app:layout_constraintLeft_toRightOf="@id/birth"
         app:layout_constraintTop_toBottomOf="@id/name"
         tools:text="/남"/>
@@ -54,16 +75,31 @@
         android:id="@+id/address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:fontFamily="@font/gmarket_sans_medium"
+        android:layout_marginTop="7dp"
         app:layout_constraintTop_toBottomOf="@id/birth"
         app:layout_constraintLeft_toRightOf="@id/candidate_img"
         app:layout_constraintLeft_toLeftOf="@id/party"
         tools:text="서울특별시 종로구 송월길"/>
-    <TextView
-        android:id="@+id/job"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/address"
-        app:layout_constraintLeft_toRightOf="@id/candidate_img"
-        app:layout_constraintLeft_toLeftOf="@id/party"
-        tools:text="정치인"/>
+
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_district_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/party"
+        app:layout_constraintVertical_bias="0.4"/>
+
+    <View
+        android:id="@+id/candidateHr"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/candidate_img"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -94,7 +94,6 @@ public class CandidateListActivity extends AppCompatActivity {
             party = view.findViewById(R.id.party);
             birth = view.findViewById(R.id.birth);
             address = view.findViewById(R.id.address);
-            job = view.findViewById(R.id.job);
 
         }
 

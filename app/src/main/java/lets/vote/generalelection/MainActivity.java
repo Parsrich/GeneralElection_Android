@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter =
                 new ViewPagerAdapter(getSupportFragmentManager(),
                     FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPagerAdapter.addFragment(new GuideFragment());
+        viewPagerAdapter.addFragment(new CandidateListFragment());
         viewPagerAdapter.addFragment(new MainFragment());
         viewPagerAdapter.addFragment(new SettingFragment());
 
