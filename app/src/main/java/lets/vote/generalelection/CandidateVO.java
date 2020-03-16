@@ -1,6 +1,9 @@
 package lets.vote.generalelection;
 
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 public class CandidateVO {
+    public String id;
     //이름
     public String name;
     //사진
@@ -23,6 +26,41 @@ public class CandidateVO {
     public String career;
     //전과
     public String criminalRecord;
+    public String status;
+    public String si;
+    public String gu;
+    public String criminal;
+    public String district;
+
+    public CandidateVO(){
+
+    }
+
+    public CandidateVO(QueryDocumentSnapshot firebaseDocument){
+        id = (String)firebaseDocument.get("Id");
+        name = (String)firebaseDocument.get("Name");
+        birth = (String)firebaseDocument.get("Age");
+        address = (String)firebaseDocument.get("Address");
+        imageUrl = (String)firebaseDocument.get("ImageUrl");
+        status = (String)firebaseDocument.get("Status");
+        si = (String)firebaseDocument.get("Si");
+        gu = (String)firebaseDocument.get("Gu");
+        criminal = (String)firebaseDocument.get("Criminal");
+        education = (String)firebaseDocument.get("Education");
+        career = (String)firebaseDocument.get("Career");
+        job = (String)firebaseDocument.get("Job");
+        district = (String)firebaseDocument.get("District");
+        party = (String)firebaseDocument.get("Party");
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -112,10 +150,51 @@ public class CandidateVO {
         this.criminalRecord = criminalRecord;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getSi() {
+        return si;
+    }
+
+    public void setSi(String si) {
+        this.si = si;
+    }
+
+    public String getGu() {
+        return gu;
+    }
+
+    public void setGu(String gu) {
+        this.gu = gu;
+    }
+
+    public String getCriminal() {
+        return criminal;
+    }
+
+    public void setCriminal(String criminal) {
+        this.criminal = criminal;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
     @Override
     public String toString() {
         return "CandidateVO{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", gender='" + gender + '\'' +
                 ", party='" + party + '\'' +
@@ -126,6 +205,11 @@ public class CandidateVO {
                 ", education='" + education + '\'' +
                 ", career='" + career + '\'' +
                 ", criminalRecord='" + criminalRecord + '\'' +
+                ", status='" + status + '\'' +
+                ", si='" + si + '\'' +
+                ", gu='" + gu + '\'' +
+                ", criminal='" + criminal + '\'' +
+                ", district='" + district + '\'' +
                 '}';
     }
 }

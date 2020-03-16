@@ -7,11 +7,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +29,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CandidateListFragment extends Fragment {
+    private List<CandidateVO> list ;
+    private CandidateAdapter adapter;
+    private int totalCount;
 
     public CandidateListFragment() {
         // Required empty public constructor
@@ -34,28 +45,54 @@ public class CandidateListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_candidate_list, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.candidateList);
 
-        List<CandidateVO> list = new ArrayList<>();
 
-        for (int i = 0 ; i < 20 ; i++){
-            CandidateVO temp = new CandidateVO();
-            temp.name = "이낙연 ";
-            temp.party = "더불어민주당" + i;
-            temp.birth = "1952.12.20(67세)";
-            temp.address = "서울특별시 종로구 송월길 ";
-            temp.gender = "/남";
-
-            list.add(temp);
-        }
+        list = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new CandidateAdapter(list));
+        adapter = new CandidateAdapter(list);
+        recyclerView.setAdapter(adapter);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("candidate")
+                .whereEqualTo("Si","서울특별시")
+                .whereEqualTo("Gu","종로구")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            totalCount = task.getResult().size();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("list_test",new CandidateVO(document).toString());
+                                list.add(new CandidateVO(document));
+                            }
+                            adapter.notifyDataSetChanged();
+                            Log.d("result",list.toString());
+                        } else {
+                            Log.w("DB_TEST", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener (){
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastPosition = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                Log.d("position",lastPosition + "");
+                if (lastPosition == list.size()-1) {
+                    Log.d("position","마지막 값");
+                }
+            }
+        });
 
         return rootView;
     }
 
     private class CandidateAdapter extends RecyclerView.Adapter<CandidateViewHolder> {
-        List<CandidateVO> mlist;
+        List<CandidateVO> mList;
         public CandidateAdapter(List<CandidateVO> list){
-            mlist = list;
+            mList = list;
         }
 
         @NonNull
@@ -67,7 +104,7 @@ public class CandidateListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull CandidateViewHolder holder, int position) {
-            CandidateVO vo = mlist.get(position);
+            CandidateVO vo = mList.get(position);
             holder.party.setText(vo.party);
             holder.name.setText(vo.name);
             holder.birth.setText(vo.birth);
@@ -77,7 +114,7 @@ public class CandidateListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mlist.size();
+            return mList.size();
         }
     }
 
