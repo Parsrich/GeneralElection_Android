@@ -1,8 +1,12 @@
 package lets.vote.generalelection;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,11 +38,16 @@ public class CandidateListFragment extends Fragment {
     private List<CandidateVO> list ;
     private CandidateAdapter adapter;
     private int totalCount;
-
+    private Context mContext;
     public CandidateListFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +55,43 @@ public class CandidateListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_candidate_list, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.candidateList);
+        Spinner spinner = rootView.findViewById(R.id.electionSpinner);
+
+        List<String> selectList = new ArrayList<>();
+        selectList.add("국회의원선거");
+        selectList.add("구·시·군의 장선거");
+        selectList.add("시·도의회의원선거");
+        selectList.add("구·시·군의회의원선거");
+
+        ArrayAdapter<String> selectAdapter
+                = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, selectList){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                Typeface externalFont= ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
+
+                ((TextView) view).setTypeface(externalFont);
+                ((TextView) view).setTextSize(17);
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+
+                Typeface externalFont= ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
+
+                ((TextView) view).setTypeface(externalFont);
+                ((TextView) view).setTextSize(17);
+                return view;
+            }
+
+        };
+
+        selectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(selectAdapter);
 
 
         list = new ArrayList<>();
@@ -110,6 +158,10 @@ public class CandidateListFragment extends Fragment {
             holder.birth.setText(vo.birth);
             holder.gender.setText(vo.gender);
             holder.address.setText(vo.address);
+//            Log.d("imgUrl",vo.imageUrl);
+//            Log.d("imgUrl",holder.itemView.getContext().toString());
+//            Log.d("imgUrl",holder.image.toString());
+            Glide.with(holder.itemView.getContext()).load(vo.imageUrl).into(holder.candidateImage);
         }
 
         @Override
@@ -122,7 +174,7 @@ public class CandidateListFragment extends Fragment {
         //        이름
         public TextView name;
         //        사진
-        public ImageView image;
+        public ImageView candidateImage;
         //        성별
         public TextView gender;
         //        정당
@@ -141,6 +193,7 @@ public class CandidateListFragment extends Fragment {
             party = view.findViewById(R.id.party);
             birth = view.findViewById(R.id.birth);
             address = view.findViewById(R.id.address);
+            candidateImage = view.findViewById(R.id.candidateImage);
 
         }
     }

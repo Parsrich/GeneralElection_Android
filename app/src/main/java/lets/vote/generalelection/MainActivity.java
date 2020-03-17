@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                         FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPagerAdapter.addFragment(new CandidateListFragment());
         viewPagerAdapter.addFragment(new MainFragment());
-        viewPagerAdapter.addFragment(new SettingFragment());
+        viewPagerAdapter.addFragment(new SearchCandidateFragment());
 
         viewPager.setAdapter(viewPagerAdapter);
 

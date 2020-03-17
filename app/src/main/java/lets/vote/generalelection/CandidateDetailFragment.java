@@ -52,15 +52,6 @@ public class CandidateDetailFragment extends Fragment {
 
         ImageView imageView = rootView.findViewById(R.id.candidateDetailImage);
 
-//        Thread mTread = new Thread() {
-//            @Override
-//            public void run(){
-//                URL url = new URL
-////            }
-//        };
-
-
-
         RecyclerView recyclerView = rootView.findViewById(R.id.candidateDetailRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(new CandidateAdapter(list));
