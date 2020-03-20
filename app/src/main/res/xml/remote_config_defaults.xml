@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultMap>
+    <entry>
+        <key>SiGu</key>
+        <value>시/구 정보를 확인할 수 없습니다.</value>
+    </entry>
+    <entry>
+        <key>candidate</key>
+        <value>test</value>
+    </entry>
+    <entry>
+        <key>district</key>
+        <value>test</value>
+    </entry>
+</defaultMap>
