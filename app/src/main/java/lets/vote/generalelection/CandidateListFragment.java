@@ -35,8 +35,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CandidateListFragment extends Fragment {
-    private List<CandidateVO> list ;
+    private List<CandidateVO> candidateList ;
     private CandidateAdapter adapter;
+    private DistrictAdapter districtAdapter;
     private int totalCount;
     private Context mContext;
     public CandidateListFragment() {
@@ -55,7 +56,9 @@ public class CandidateListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_candidate_list, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.candidateList);
+//        RecyclerView districtRecyclerView = rootView.findViewById(R.id.districtList);
         Spinner spinner = rootView.findViewById(R.id.electionSpinner);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         List<String> selectList = new ArrayList<>();
         selectList.add("국회의원선거");
@@ -93,13 +96,11 @@ public class CandidateListFragment extends Fragment {
         selectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(selectAdapter);
 
-
-        list = new ArrayList<>();
+        /* 후보자 리스트 */
+        candidateList = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CandidateAdapter(list);
+        adapter = new CandidateAdapter(candidateList);
         recyclerView.setAdapter(adapter);
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("candidate")
                 .whereEqualTo("Si","서울특별시")
@@ -112,10 +113,10 @@ public class CandidateListFragment extends Fragment {
                             totalCount = task.getResult().size();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("list_test",new CandidateVO(document).toString());
-                                list.add(new CandidateVO(document));
+                                candidateList.add(new CandidateVO(document));
                             }
                             adapter.notifyDataSetChanged();
-                            Log.d("result",list.toString());
+                            Log.d("result",candidateList.toString());
                         } else {
                             Log.w("DB_TEST", "Error getting documents.", task.getException());
                         }
@@ -128,11 +129,23 @@ public class CandidateListFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 int lastPosition = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
                 Log.d("position",lastPosition + "");
-                if (lastPosition == list.size()-1) {
+                if (lastPosition == candidateList.size()-1) {
                     Log.d("position","마지막 값");
                 }
             }
         });
+
+        List<String> districtList = new ArrayList<>();
+        districtList.add("서울특별시");
+        districtList.add("경기도");
+        districtList.add("강원도");
+
+//        districtRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        districtAdapter = new DistrictAdapter(districtList);
+        recyclerView.setAdapter(districtAdapter);
+
+
 
         return rootView;
     }
@@ -195,6 +208,41 @@ public class CandidateListFragment extends Fragment {
             address = view.findViewById(R.id.address);
             candidateImage = view.findViewById(R.id.candidateImage);
 
+        }
+    }
+
+
+    private class DistrictAdapter extends RecyclerView.Adapter<DistrictViewHolder> {
+        List<String> mList;
+        public DistrictAdapter(List<String> list){
+            mList = list;
+        }
+
+        @NonNull
+        @Override
+        public DistrictViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_disctrict,viewGroup,false);
+            return new DistrictViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull DistrictViewHolder holder, int position) {
+            String d = mList.get(position);
+            holder.districtName.setText(d);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mList.size();
+        }
+    }
+
+    private class DistrictViewHolder extends RecyclerView.ViewHolder{
+        TextView districtName;
+
+        public DistrictViewHolder(View view){
+            super(view);
+            districtName = view.findViewById(R.id.districtName);
         }
     }
 }
