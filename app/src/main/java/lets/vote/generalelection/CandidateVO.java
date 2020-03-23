@@ -2,6 +2,8 @@ package lets.vote.generalelection;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.Map;
+
 public class CandidateVO {
     public String id;
     //이름
@@ -36,21 +38,21 @@ public class CandidateVO {
 
     }
 
-    public CandidateVO(QueryDocumentSnapshot firebaseDocument){
-        id = (String)firebaseDocument.get("Id");
-        name = (String)firebaseDocument.get("Name");
-        birth = (String)firebaseDocument.get("Age");
-        address = (String)firebaseDocument.get("Address");
-        imageUrl = (String)firebaseDocument.get("ImageUrl");
-        status = (String)firebaseDocument.get("Status");
-        si = (String)firebaseDocument.get("Si");
-        gu = (String)firebaseDocument.get("Gu");
-        criminal = (String)firebaseDocument.get("Criminal");
-        education = (String)firebaseDocument.get("Education");
-        career = (String)firebaseDocument.get("Career");
-        job = (String)firebaseDocument.get("Job");
-        district = (String)firebaseDocument.get("District");
-        party = (String)firebaseDocument.get("Party");
+    public CandidateVO(Map<String,Object>candidateObject){
+        id = (String)candidateObject.get("Id");
+        name = (String)candidateObject.get("Name");
+        birth = (String)candidateObject.get("Age");
+        address = (String)candidateObject.get("Address");
+        imageUrl = (String)candidateObject.get("ImageUrl");
+        status = (String)candidateObject.get("Status");
+        si = (String)candidateObject.get("Si");
+        gu = (String)candidateObject.get("Gu");
+        criminal = (String)candidateObject.get("Criminal");
+        education = (String)candidateObject.get("Education");
+        career = (String)candidateObject.get("Career");
+        job = (String)candidateObject.get("Job");
+        district = (String)candidateObject.get("District");
+        party = (String)candidateObject.get("Party");
     }
 
 

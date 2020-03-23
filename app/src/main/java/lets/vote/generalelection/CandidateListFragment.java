@@ -35,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -49,18 +50,52 @@ public class CandidateListFragment extends Fragment {
     private Context mContext;
     private List<String> districtList = new ArrayList<>();
     private String path;
+    private Map<String,Object> districtMap;
+
+    private ValueEventListener candidateListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            ArrayList<Object> value = (ArrayList<Object>) dataSnapshot.getValue();
+            Log.d("test",value.toString());
+            recyclerView.setAdapter(adapter);
+            candidateList.clear();
+            for( Object candidate :value){
+                candidateList.add(new CandidateVO((Map<String,Object>)candidate));
+
+            }
+
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
+    };
 
     private ValueEventListener listener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             HashMap<String, Object> value = (HashMap<String, Object>) dataSnapshot.getValue();
-            districtList.addAll(value.keySet());
-            districtAdapter.notifyDataSetChanged();
+
+            if (value.containsKey("congress")) {
+//                FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
+                districtMap = (HashMap<String, Object>) value;
+                String selectedElection = "congress";
+                String targetDistrict= (String)districtMap.get(selectedElection);
+                String candidatePath = selectedElection+ "/" + targetDistrict;
+                FirebaseDistrictManager.getDbRef(candidatePath).addListenerForSingleValueEvent(candidateListener);
+                Log.d("test",candidatePath);
+            } else {
+                districtList.addAll(value.keySet());
+                districtAdapter.notifyDataSetChanged();
+            }
         }
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
+
+
 
 
     public CandidateListFragment() {
@@ -146,13 +181,9 @@ public class CandidateListFragment extends Fragment {
         /* 지역 리스트 */
         FirebaseDistrictManager.setup();
 
-
         /* 값불러와서 Adapter 리스트에 추가하기 */
         path = "/district";
         FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
-
-
-
 
         return rootView;
     }
@@ -242,12 +273,18 @@ public class CandidateListFragment extends Fragment {
                     Log.d("test",((TextView)v.findViewById(R.id.districtName)).getText().toString());
                     path = path + "/" + ((TextView)v.findViewById(R.id.districtName)).getText().toString();
                     Log.d("test",path);
-                    if (path.split("/").length != 5){
-                        districtList.clear();
-//                        districtAdapter.notifyDataSetChanged();
-                        FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
-                    } else {
-                        recyclerView.setAdapter(adapter);
+                    districtList.clear();
+                    FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
+//                    if (path.split("/").length != 5){
+//                        districtList.clear();
+////                        districtAdapter.notifyDataSetChanged();
+//                        FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
+//                    } else {
+//                        recyclerView.setAdapter(adapter);
+//                        candidateList.clear();
+//                        FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
+
+
 //                        db.collection("candidate")
 //                            .whereEqualTo("Si","서울특별시")
 //                            .whereEqualTo("Gu","종로구")
@@ -268,7 +305,7 @@ public class CandidateListFragment extends Fragment {
 //                                    }
 //                                }
 //                            });
-                    }
+//                    }
 
                 }
             });
