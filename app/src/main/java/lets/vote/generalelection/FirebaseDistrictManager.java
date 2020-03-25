@@ -10,13 +10,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 class FirebaseDistrictManager {
     private static FirebaseDatabase database;
     private static DatabaseReference rootRef;
     private static DatabaseReference dbRef;
+    private static MutableLiveData<Map<String,Object>> districtMutableLiveData;
+
+
     static void setup() {
         database = FirebaseDatabase.getInstance();
         rootRef = database.getReference("/");
@@ -33,4 +38,26 @@ class FirebaseDistrictManager {
     public static DatabaseReference getDbRef(String path) {
         return FirebaseDistrictManager.dbRef = rootRef.child(path);
     }
+
+    public static MutableLiveData<Map<String,Object>> getDistrictMap() {
+        if (districtMutableLiveData == null ) {
+            database = FirebaseDatabase.getInstance();
+            districtMutableLiveData = new MutableLiveData<>();
+            rootRef = database.getReference("/");
+            rootRef.child("district")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // How to return this value?
+                            Map<String, Object> district = (Map<String, Object>)dataSnapshot.getValue(Object.class);
+                            districtMutableLiveData.setValue(district);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+        }
+        return districtMutableLiveData;
+    }
 }
+

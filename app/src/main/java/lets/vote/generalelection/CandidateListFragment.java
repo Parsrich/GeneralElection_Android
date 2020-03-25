@@ -1,6 +1,7 @@
 package lets.vote.generalelection;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -8,34 +9,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 
 /**
@@ -44,59 +43,33 @@ import java.util.Map;
 public class CandidateListFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<CandidateVO> candidateList ;
-    private CandidateAdapter adapter;
+    private CandidateAdapter candidateAdapter;
     private DistrictAdapter districtAdapter;
-    private int totalCount;
     private Context mContext;
     private List<String> districtList = new ArrayList<>();
     private String path;
     private Map<String,Object> districtMap;
 
+    private int nowElection = 0;
+    private int nowDepth = 0;
+    private int nowDistrict = 0;
+    private Stack<String> districtHistoryStack = new Stack<>();
+
     private ValueEventListener candidateListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            Log.d("test", "onDataChange: " + dataSnapshot.getValue().toString());
             ArrayList<Object> value = (ArrayList<Object>) dataSnapshot.getValue();
-            Log.d("test",value.toString());
-            recyclerView.setAdapter(adapter);
-            candidateList.clear();
+
             for( Object candidate :value){
                 candidateList.add(new CandidateVO((Map<String,Object>)candidate));
-
             }
-
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-        }
-    };
-
-    private ValueEventListener listener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            HashMap<String, Object> value = (HashMap<String, Object>) dataSnapshot.getValue();
-
-            if (value.containsKey("congress")) {
-//                FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
-                districtMap = (HashMap<String, Object>) value;
-                String selectedElection = "congress";
-                String targetDistrict= (String)districtMap.get(selectedElection);
-                String candidatePath = selectedElection+ "/" + targetDistrict;
-                FirebaseDistrictManager.getDbRef(candidatePath).addListenerForSingleValueEvent(candidateListener);
-                Log.d("test",candidatePath);
-            } else {
-                districtList.addAll(value.keySet());
-                districtAdapter.notifyDataSetChanged();
-            }
+            candidateAdapter.notifyDataSetChanged();
         }
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
-
-
-
 
     public CandidateListFragment() {
         // Required empty public constructor
@@ -112,26 +85,21 @@ public class CandidateListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
         View rootView = inflater.inflate(R.layout.fragment_candidate_list, container, false);
+
+        /* 선거 선택 */
         Spinner spinner = rootView.findViewById(R.id.electionSpinner);
 
-        recyclerView = rootView.findViewById(R.id.candidateList);
-        final List<String> selectList = new ArrayList<>();
-        selectList.add("국회의원선거");
-        selectList.add("구·시·군의 장선거");
-        selectList.add("시·도의회의원선거");
-        selectList.add("구·시·군의회의원선거");
 
         final ArrayAdapter<String> selectAdapter
-                = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, selectList){
+                = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.selectElection)) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
 
-                Typeface externalFont= ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
+                Typeface externalFont = ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
 
                 ((TextView) view).setTypeface(externalFont);
                 ((TextView) view).setTextSize(17);
@@ -142,50 +110,149 @@ public class CandidateListFragment extends Fragment {
             public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
 
-                Typeface externalFont= ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
+                Typeface externalFont = ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
 
                 ((TextView) view).setTypeface(externalFont);
                 ((TextView) view).setTextSize(17);
                 return view;
             }
-
         };
 
         selectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(selectAdapter);
 
-        /* 후보자 리스트 */
+        spinner.setAdapter(selectAdapter);
+        spinner.setSelection(nowElection);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (view != null) {
+                    Log.d("test", ((TextView) view).getText().toString());
+                    nowElection = position;
+                    Log.d("test", (nowElection + ""));
+
+                    if(districtHistoryStack.size() == 3){
+                        districtList.clear();
+                        districtList.addAll(getDistrictList(districtHistoryStack));
+                        candidateList.clear();
+                        Log.d("test", "onItemSelected: " +Election.values()[nowElection].toString() );
+                        Log.d("test", "onItemSelected: " +districtList.get(0) );
+
+                        FirebaseDistrictManager.getDbRef(Election.values()[nowElection].toString()+"/"+districtList.get(0)).addListenerForSingleValueEvent(candidateListener);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                nowElection = 0;
+            }
+        });
+
+
+        /* 데이터 */
+
+        recyclerView = rootView.findViewById(R.id.candidateList);
+
+        /* 후보자 Adapter */
 
         candidateList = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CandidateAdapter(candidateList);
-        recyclerView.setAdapter(adapter);
+        candidateAdapter = new CandidateAdapter(candidateList);
+        districtAdapter = new DistrictAdapter(districtList);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener (){
+        /* 마지막 값인지 확인 */
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int lastPosition = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-                Log.d("position",lastPosition + "");
-                if (lastPosition == candidateList.size()-1) {
-                    Log.d("position","마지막 값");
+                int lastPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                Log.d("position", lastPosition + "");
+                if (lastPosition == candidateList.size() - 1) {
+                    Log.d("position", "마지막 값");
                 }
             }
         });
 
 
-        districtAdapter = new DistrictAdapter(districtList);
-        recyclerView.setAdapter(districtAdapter);
+        /* 현재 동까지 검색했을 때 */
+        if ( districtHistoryStack.size() == 3 ){
+            recyclerView.setAdapter(candidateAdapter);
+        } else {
+            recyclerView.setAdapter(districtAdapter);
+        }
 
+        /* 데이터 가져오기 */
+        if (districtMap == null || districtMap.size() == 0 ){
+            FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
+                @Override
+                public void onChanged(Map<String, Object> resultMap) {
+                    Log.d("test","resultMap.toString() "+resultMap.toString());
+                    Log.d("test","districtHistoryStack "+districtHistoryStack.toString());
+                    districtMap = resultMap;
 
-        /* 지역 리스트 */
-        FirebaseDistrictManager.setup();
+                    if ( districtHistoryStack.size() == 3 ){
+                        districtList.addAll(getDistrictList(districtHistoryStack));
+                        FirebaseDistrictManager.getDbRef(Election.values()[nowElection].toString()+"/"+districtList.get(0)).addListenerForSingleValueEvent(candidateListener);
+                    } else {
+                        districtList.addAll(getDistrictList(districtHistoryStack));
+                        Log.d("test",districtList.toString());
+                        districtAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        } else {
+            if ( districtHistoryStack.size() == 3 ){
+                districtList.addAll(getDistrictList(districtHistoryStack));
+                FirebaseDistrictManager.getDbRef(Election.values()[nowElection].toString()+"/"+districtList.get(0)).addListenerForSingleValueEvent(candidateListener);
 
-        /* 값불러와서 Adapter 리스트에 추가하기 */
-        path = "/district";
-        FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
+            } else {
+                districtList.addAll(getDistrictList(districtHistoryStack));
+                Log.d("test", districtList.toString());
+                districtAdapter.notifyDataSetChanged();
+            }
+        }
 
         return rootView;
+    }
+
+    public List<String> getDistrictList( Stack<String> history){
+        List<String> resultList = new ArrayList<>();
+        Map<String,Object> temp = districtMap;
+
+        if (history != null && history.size() < 4){
+
+            for(int i = 0; i < history.size() ; i++) {
+                temp = (Map<String, Object>) temp.get(history.get(i));
+                Log.d("test",temp.toString());
+            }
+
+            if (history.size() == 3) {
+                resultList =  new ArrayList<>();
+                Log.d("test", "getDistrictList: " + Election.values()[nowElection]);
+                resultList.add((String)temp.get(Election.values()[nowElection].toString()));
+            }else {
+                resultList =  new ArrayList<>(temp.keySet());
+            }
+        }
+        Collections.sort(resultList);
+
+        return resultList;
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        districtList.clear();
+        candidateList.clear();
+
+        districtAdapter.notifyDataSetChanged();
+        candidateAdapter.notifyDataSetChanged();
+
+        recyclerView = null;
     }
 
     private class CandidateAdapter extends RecyclerView.Adapter<CandidateViewHolder> {
@@ -209,9 +276,6 @@ public class CandidateListFragment extends Fragment {
             holder.birth.setText(vo.birth);
             holder.gender.setText(vo.gender);
             holder.address.setText(vo.address);
-//            Log.d("imgUrl",vo.imageUrl);
-//            Log.d("imgUrl",holder.itemView.getContext().toString());
-//            Log.d("imgUrl",holder.image.toString());
             Glide.with(holder.itemView.getContext()).load(vo.imageUrl).into(holder.candidateImage);
         }
 
@@ -270,43 +334,25 @@ public class CandidateListFragment extends Fragment {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("test",((TextView)v.findViewById(R.id.districtName)).getText().toString());
-                    path = path + "/" + ((TextView)v.findViewById(R.id.districtName)).getText().toString();
-                    Log.d("test",path);
-                    districtList.clear();
-                    FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
-//                    if (path.split("/").length != 5){
-//                        districtList.clear();
-////                        districtAdapter.notifyDataSetChanged();
-//                        FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
-//                    } else {
-//                        recyclerView.setAdapter(adapter);
-//                        candidateList.clear();
-//                        FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(listener);
+                    if(v != null){
 
+                        districtList.clear();
+                        districtHistoryStack.push(((TextView)v.findViewById(R.id.districtName)).getText().toString());
+                        districtList.addAll(getDistrictList(districtHistoryStack));
+                        Log.d("test",districtHistoryStack.toString());
+                        Log.d("test",districtList.toString());
+                        if ( districtHistoryStack.size() < 3){
 
-//                        db.collection("candidate")
-//                            .whereEqualTo("Si","서울특별시")
-//                            .whereEqualTo("Gu","종로구")
-//                            .get()
-//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if (task.isSuccessful()) {
-//                                        totalCount = task.getResult().size();
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            Log.d("list_test",new CandidateVO(document).toString());
-//                                            candidateList.add(new CandidateVO(document));
-//                                        }
-//                                        adapter.notifyDataSetChanged();
-//                                        Log.d("result",candidateList.toString());
-//                                    } else {
-//                                        Log.w("DB_TEST", "Error getting documents.", task.getException());
-//                                    }
-//                                }
-//                            });
-//                    }
+                            districtAdapter.notifyDataSetChanged();
+                        } else {
+                            recyclerView.setAdapter(candidateAdapter);
+                            candidateList.clear();
+                            candidateAdapter.notifyDataSetChanged();
+                            FirebaseDistrictManager.getDbRef(Election.values()[nowElection].toString()+"/"+districtList.get(0)).addListenerForSingleValueEvent(candidateListener);
 
+                        }
+
+                    }
                 }
             });
 
