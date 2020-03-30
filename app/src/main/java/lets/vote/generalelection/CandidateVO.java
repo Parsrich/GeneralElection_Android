@@ -1,10 +1,11 @@
 package lets.vote.generalelection;
 
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import android.util.Log;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class CandidateVO {
+public class CandidateVO implements Serializable,Comparable<CandidateVO>{
     public String id;
     //이름
     public String name;
@@ -14,8 +15,8 @@ public class CandidateVO {
     public String gender;
     //정당
     public String party;
-    //선거구
-    public String electionDistrict;
+    //기호
+    public String number;
     //생년월일
     public String birth;
     //주소
@@ -27,12 +28,18 @@ public class CandidateVO {
     //경력
     public String career;
     //전과
-    public String criminalRecord;
     public String status;
     public String si;
-    public String gu;
     public String criminal;
     public String district;
+    public String military;
+    public String nameFull;
+    public String property;
+    public String taxArrears;
+    public String taxArrears5;
+    public String taxPayment;
+    public String regCount;
+
 
     public CandidateVO(){
 
@@ -46,15 +53,24 @@ public class CandidateVO {
         imageUrl = (String)candidateObject.get("ImageUrl");
         status = (String)candidateObject.get("Status");
         si = (String)candidateObject.get("Si");
-        gu = (String)candidateObject.get("Gu");
         criminal = (String)candidateObject.get("Criminal");
         education = (String)candidateObject.get("Education");
         career = (String)candidateObject.get("Career");
         job = (String)candidateObject.get("Job");
         district = (String)candidateObject.get("District");
         party = (String)candidateObject.get("Party");
-    }
+        number = (String)candidateObject.get("Number");
+        gender = (String)candidateObject.get("Gender");
+        military = (String)candidateObject.get("Military");
+        nameFull = (String)candidateObject.get("NameFull");
+        property = (String)candidateObject.get("Property");
+        taxArrears = (String)candidateObject.get("TaxArrears");
+        taxArrears5 = (String)candidateObject.get("TaxArrears5");
+        taxPayment = (String)candidateObject.get("TaxPayment");
+        regCount = (String)candidateObject.get("RegCount");
 
+//        Log.d("test", "CandidateVO: " + candidateObject.toString());
+    }
 
     public String getId() {
         return id;
@@ -96,12 +112,12 @@ public class CandidateVO {
         this.party = party;
     }
 
-    public String getElectionDistrict() {
-        return electionDistrict;
+    public String getNumber() {
+        return number;
     }
 
-    public void setElectionDistrict(String electionDistrict) {
-        this.electionDistrict = electionDistrict;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getBirth() {
@@ -144,14 +160,6 @@ public class CandidateVO {
         this.career = career;
     }
 
-    public String getCriminalRecord() {
-        return criminalRecord;
-    }
-
-    public void setCriminalRecord(String criminalRecord) {
-        this.criminalRecord = criminalRecord;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -166,14 +174,6 @@ public class CandidateVO {
 
     public void setSi(String si) {
         this.si = si;
-    }
-
-    public String getGu() {
-        return gu;
-    }
-
-    public void setGu(String gu) {
-        this.gu = gu;
     }
 
     public String getCriminal() {
@@ -192,6 +192,72 @@ public class CandidateVO {
         this.district = district;
     }
 
+    public String getMilitary() {
+        return military;
+    }
+
+    public void setMilitary(String military) {
+        this.military = military;
+    }
+
+    public String getNameFull() {
+        return nameFull;
+    }
+
+    public void setNameFull(String nameFull) {
+        this.nameFull = nameFull;
+    }
+
+    public String getTaxArrears() {
+        return taxArrears;
+    }
+
+    public void setTaxArrears(String taxArrears) {
+        this.taxArrears = taxArrears;
+    }
+
+    public String getTaxArrears5() {
+        return taxArrears5;
+    }
+
+    public void setTaxArrears5(String taxArrears5) {
+        this.taxArrears5 = taxArrears5;
+    }
+
+    public String getTaxPayment() {
+        return taxPayment;
+    }
+
+    public void setTaxPayment(String taxPayment) {
+        this.taxPayment = taxPayment;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public String getRegCount() {
+        return regCount;
+    }
+
+    public void setRegCount(String regCount) {
+        this.regCount = regCount;
+    }
+
+    @Override
+    public int compareTo(CandidateVO c) {
+        if (Integer.parseInt(this.number) < Integer.parseInt(c.getNumber())) {
+            return -1;
+        } else if (Integer.parseInt(this.number) > Integer.parseInt(c.getNumber())) {
+            return 1;
+        }
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "CandidateVO{" +
@@ -200,18 +266,23 @@ public class CandidateVO {
                 ", imageUrl='" + imageUrl + '\'' +
                 ", gender='" + gender + '\'' +
                 ", party='" + party + '\'' +
-                ", electionDistrict='" + electionDistrict + '\'' +
+                ", number='" + number + '\'' +
                 ", birth='" + birth + '\'' +
                 ", address='" + address + '\'' +
                 ", job='" + job + '\'' +
                 ", education='" + education + '\'' +
                 ", career='" + career + '\'' +
-                ", criminalRecord='" + criminalRecord + '\'' +
                 ", status='" + status + '\'' +
                 ", si='" + si + '\'' +
-                ", gu='" + gu + '\'' +
                 ", criminal='" + criminal + '\'' +
                 ", district='" + district + '\'' +
+                ", military='" + military + '\'' +
+                ", nameFull='" + nameFull + '\'' +
+                ", property='" + property + '\'' +
+                ", taxArrears='" + taxArrears + '\'' +
+                ", taxArrears5='" + taxArrears5 + '\'' +
+                ", taxPayment='" + taxPayment + '\'' +
+                ", regCount='" + regCount + '\'' +
                 '}';
     }
 }

@@ -1,21 +1,12 @@
 package lets.vote.generalelection;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter =
                 new ViewPagerAdapter(getSupportFragmentManager(),
                         FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPagerAdapter.addFragment(new CandidateListFragment());
-        viewPagerAdapter.addFragment(new MainFragment());
+
+        Fragment mainFragment = MainFragment.getInstance();
+        viewPagerAdapter.addFragment(new GuideFragment());
+        viewPagerAdapter.addFragment(mainFragment);
         viewPagerAdapter.addFragment(new PartyListFragment());
 
         viewPager.setAdapter(viewPagerAdapter);

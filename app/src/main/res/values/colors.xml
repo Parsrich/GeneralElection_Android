@@ -22,4 +22,10 @@
     <color name="candidateInfoBackgroundColor">#F9F9F9</color>
 <!--    버튼-->
     <color name="detailBtn">#8271CC</color>
+<!--nav 활성    -->
+    <color name="navActivate">#7269EA</color>
+<!--nav 비활성    -->
+    <color name="navDeactivate">#CECCCD</color>
+
+
 </resources>

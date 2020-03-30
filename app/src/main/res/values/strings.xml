@@ -3,10 +3,67 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="si_title">시∙도</string>
+    <string name="gu_title">구∙시∙군</string>
+    <string name="dong_title">동∙읍∙면</string>
     <string-array name="selectElection">
         <item>국회의원선거</item>
         <item>구·시·군의 장선거</item>
         <item>시·도의회의원선거</item>
         <item>구·시·군의회의원선거</item>
     </string-array>
+
+    <!--    <string-array name="partyColors">-->
+    <!--        <item name="더불어민주당">#00A0E2</item>-->
+    <!--        <item name="미래통합당">#F0426F</item>-->
+    <!--        <item name="민생당">#0AA95F</item>-->
+    <!--        <item name="미래한국당">#B01B64</item>-->
+    <!--        <item name="정의당">#FFCC01</item>-->
+    <!--        <item name="우리공화당">#009944</item>-->
+    <!--        <item name="국민의당">#EA5504</item>-->
+    <!--        <item name="기독자유통일당">#0075C3</item>-->
+    <!--        <item name="더불어시민당">#0089D3</item>-->
+    <!--        <item name="민중당">#F26623</item>-->
+    <!--        <item name="열린민주당">#003E9B</item>-->
+    <!--        <item name="친박신당">#E30010</item>-->
+    <!--        <item name="국가혁명배당금당">#E8141A</item>-->
+    <!--        <item name="가자코리아">#603027</item>-->
+    <!--        <item name="가자!평화인권당">#0000FF</item>-->
+    <!--        <item name="가자환경당">#007254</item>-->
+    <!--        <item name="국민새정당">#1F6DDC</item>-->
+    <!--        <item name="국민참여신당">#F8C401</item>-->
+    <!--        <item name="기독당">#765192</item>-->
+    <!--        <item name="기본소득당">#FE8971</item>-->
+    <!--        <item name="깨어있는시민연대당">#000478</item>-->
+    <!--        <item name="남북통일당">#ED000C</item>-->
+    <!--        <item name="노동당">#FF0000</item>-->
+    <!--        <item name="녹색당">#5DBE3F</item>-->
+    <!--        <item name="대한당">#4B3293</item>-->
+    <!--        <item name="대한민국당">#DF9B26</item>-->
+    <!--        <item name="미래당">#2E3192</item>-->
+    <!--        <item name="미래민주당">#01A7E7</item>-->
+    <!--        <item name="미래자영업당">#FFB42F</item>-->
+    <!--        <item name="민중민주당">#8F2650</item>-->
+    <!--        <item name="사이버모바일국민정책당">#EF5025</item>-->
+    <!--        <item name="새누리당">#D91E48</item>-->
+    <!--        <item name="시대전환">#5A147E</item>-->
+    <!--        <item name="여성의당">#44009A</item>-->
+    <!--        <item name="자유당">#30318B</item>-->
+    <!--        <item name="자유의새벽당">#101922</item>-->
+    <!--        <item name="정치개혁연합">#C78665</item>-->
+    <!--        <item name="중소자영업당">#56BA38</item>-->
+    <!--        <item name="직능자영업당">#752B88</item>-->
+    <!--        <item name="충청의미래당">#AE469F</item>-->
+    <!--        <item name="친박연대">#0C449B</item>-->
+    <!--        <item name="통일민주당">#8FA6A2</item>-->
+    <!--        <item name="통합민주당">#9ACE32</item>-->
+    <!--        <item name="한국경제당">#F58229</item>-->
+    <!--        <item name="한국국민당">#013588</item>-->
+    <!--        <item name="한국복지당">#EA5404</item>-->
+    <!--        <item name="한나라당">#D61921</item>-->
+    <!--        <item name="한반도미래연합">#E33434</item>-->
+    <!--        <item name="홍익당">#5D173C</item>-->
+    <!--        <item name="우리당">#CC979797</item>-->
+    <!--        <item name="공화당">#CC979797</item>-->
+    <!--    </string-array>-->
 </resources>

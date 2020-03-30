@@ -1,6 +1,6 @@
 package lets.vote.generalelection;
 
-public class CandidateInfoVO {
+public class CandidateInfoVO{
     String candidateInfoTitle;
     String candidateInfoContent;
 
