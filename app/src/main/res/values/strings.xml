@@ -13,6 +13,11 @@
         <item>구·시·군의회의원선거</item>
     </string-array>
 
+
+    <string name="no_result">해당하는 이름의 후보자가 없습니다.</string>
+    <string name="search_condition">2자이상 입력바랍니다!</string>
+    <string name="search_keyword">에 대한 검색결과입니다.</string>
+
     <!--    <string-array name="partyColors">-->
     <!--        <item name="더불어민주당">#00A0E2</item>-->
     <!--        <item name="미래통합당">#F0426F</item>-->

@@ -1,5 +1,6 @@
 package lets.vote.generalelection;
 
+import android.database.Cursor;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -39,6 +40,7 @@ public class CandidateVO implements Serializable,Comparable<CandidateVO>{
     public String taxArrears5;
     public String taxPayment;
     public String regCount;
+    public String recommend;
 
 
     public CandidateVO(){
@@ -68,8 +70,36 @@ public class CandidateVO implements Serializable,Comparable<CandidateVO>{
         taxArrears5 = (String)candidateObject.get("TaxArrears5");
         taxPayment = (String)candidateObject.get("TaxPayment");
         regCount = (String)candidateObject.get("RegCount");
+        recommend = (String)candidateObject.get("recommend");
 
 //        Log.d("test", "CandidateVO: " + candidateObject.toString());
+    }
+
+    public CandidateVO(Cursor cursor) {
+        setId(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_ID)));
+        setName(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_NAME)));
+        setBirth(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_BIRTH)));
+        setAddress(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_ADDRESS)));
+        setImageUrl(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_IMAGE_URL)));
+        setStatus(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_STATUS)));
+        setSi(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_SI)));
+        setCriminal(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_CRIMINAL)));
+        setEducation(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_EDUCATION)));
+        setCareer(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_CAREER)));
+        setJob(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_JOB)));
+        setDistrict(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_DISTRICT)));
+        setParty(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_PARTY)));
+        setNumber(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_NUMBER)));
+        setGender(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_GENDER)));
+        setMilitary(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_MILITARY)));
+        setNameFull(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_NAME_FULL)));
+        setProperty(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_PROPERTY)));
+        setTaxArrears(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_TAX_ARREARS)));
+        setTaxArrears5(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_TAX_ARREARS5)));
+        setTaxPayment(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_TAX_PAYMENT)));
+        setRegCount(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_REG_COUNT)));
+        setRegCount(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_REG_COUNT)));
+        setRecommend(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_RECOMMEND)));
     }
 
     public String getId() {
@@ -248,6 +278,14 @@ public class CandidateVO implements Serializable,Comparable<CandidateVO>{
         this.regCount = regCount;
     }
 
+    public String getRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(String recommend) {
+        this.recommend = recommend;
+    }
+
     @Override
     public int compareTo(CandidateVO c) {
         if (Integer.parseInt(this.number) < Integer.parseInt(c.getNumber())) {
@@ -283,6 +321,7 @@ public class CandidateVO implements Serializable,Comparable<CandidateVO>{
                 ", taxArrears5='" + taxArrears5 + '\'' +
                 ", taxPayment='" + taxPayment + '\'' +
                 ", regCount='" + regCount + '\'' +
+                ", recommend='" + recommend + '\'' +
                 '}';
     }
 }

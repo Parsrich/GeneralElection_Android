@@ -80,11 +80,16 @@ public class CandidateDetailFragment extends Fragment {
         ImageView candidateImage = rootView.findViewById(R.id.candidateDetailImage);
         TextView district = rootView.findViewById(R.id.candidateDetailDistrict);
 
-        String districtText = candidateVO.getSi() +">" + candidateVO.getDistrict();
-        district.setText(districtText);
+        String districtText = "비례대표";
+        String numberText = "번호"+candidateVO.getRecommend();
+        if (candidateVO.getSi() !=null){
+            districtText = candidateVO.getSi() +">" + candidateVO.getDistrict();
+            numberText = "기호"+candidateVO.getNumber();
+        }
 
-        String numberText = "기호"+candidateVO.getNumber();
+        district.setText(districtText);
         number.setText(numberText);
+
         party.setText(candidateVO.getParty());
 
         String color = PartyColor.getPartyColor(candidateVO.getParty());
