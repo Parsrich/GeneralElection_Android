@@ -148,36 +148,6 @@ public class DistrictListFragment extends Fragment {
         });
 
 
-        // 다시 돌아 올경우?
-
-//        if(districtHistoryStack.size()==3){
-//            Log.d("test", "사이즈 3!!!");
-//            if(districtHistoryStack.size()>1){
-//                while (districtHistoryStack.size() != 1){
-//                    districtHistoryStack.pop();
-//                }
-//                districtList.clear();
-//                districtList.addAll(getDistrictList(districtHistoryStack));
-//                districtAdapter.notifyDataSetChanged();
-//
-//                navGuText.setText(R.string.gu_title);
-//                navDongText.setText(R.string.dong_title);
-//                dongGroup.setVisibility(View.INVISIBLE);
-//                navGuText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
-//            }
-//        }
-
-//        /* 마지막 값인지 확인 */
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int lastPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-//                Log.d("position", lastPosition + "");
-//            }
-//        });
-
-
         recyclerView.setAdapter(districtAdapter);
 
         /* 데이터 가져오기 */

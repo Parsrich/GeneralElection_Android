@@ -22,9 +22,17 @@ import java.util.List;
  */
 public class PartyListFragment extends Fragment {
     RecyclerView partyRecyclerView;
+    private static PartyListFragment instance;
 
     public PartyListFragment() {
         // Required empty public constructor
+    }
+
+    public static Fragment getInstance() {
+        if (instance == null) {
+            instance = new PartyListFragment();
+        }
+        return instance;
     }
 
 

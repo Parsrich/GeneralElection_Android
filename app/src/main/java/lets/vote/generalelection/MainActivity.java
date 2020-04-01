@@ -1,6 +1,9 @@
 package lets.vote.generalelection;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -16,7 +19,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity {
-    ViewPager viewPager;
+    SwipeDisabledViewPager viewPager;
 
 
     @Override
@@ -36,30 +39,32 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(viewPagerAdapter);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabs = findViewById(R.id.tabs);
 
         tabs.setupWithViewPager(viewPager);
 
-        ImageView ImageViewTab1= new ImageView(MainActivity.this);
-        ImageViewTab1.setImageResource(R.drawable.ic_tab1_1);
-        ImageViewTab1.setPadding(30,10,30,20);
-        tabs.getTabAt(0).setCustomView(ImageViewTab1);
+        ImageView imageViewTab1= new ImageView(MainActivity.this);
+        imageViewTab1.setImageResource(R.drawable.ic_tab1_1);
+        imageViewTab1.setPadding(30,10,30,20);
+        tabs.getTabAt(0).setCustomView(imageViewTab1);
 
-        ImageView ImageViewTab2= new ImageView(MainActivity.this);
-        ImageViewTab2.setImageResource(R.drawable.ic_tab2_1);
-        ImageViewTab2.setPadding(30,10,30,20);
-        tabs.getTabAt(1).setCustomView(ImageViewTab2);
+        ImageView imageViewTab2= new ImageView(MainActivity.this);
+        imageViewTab2.setImageResource(R.drawable.ic_tab2_1);
+        imageViewTab2.setPadding(30,10,30,20);
+        tabs.getTabAt(1).setCustomView(imageViewTab2);
 
-        ImageView ImageViewTab3= new ImageView(MainActivity.this);
-        ImageViewTab3.setImageResource(R.drawable.ic_tab3_1);
-        ImageViewTab3.setPadding(30,10,30,20);
-        tabs.getTabAt(2).setCustomView(ImageViewTab3);
+        ImageView imageViewTab3= new ImageView(MainActivity.this);
+        imageViewTab3.setImageResource(R.drawable.ic_tab3_1);
+        imageViewTab3.setPadding(30,10,30,20);
+        tabs.getTabAt(2).setCustomView(imageViewTab3);
 
+        tabs.getTabAt(1).select();
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                viewPager.setCurrentItem(tab.getPosition(),false);
+
             }
 
             @Override
@@ -69,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                Log.d("test", "onTabReselected: ");
+                if(tab.getPosition() == 1) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
 
             }
         });

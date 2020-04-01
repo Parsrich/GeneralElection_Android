@@ -54,7 +54,7 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <lets.vote.generalelection.SwipeDisabledViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -68,6 +68,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:layout_constraintVertical_weight="1" >
-    </androidx.viewpager.widget.ViewPager>
+    </lets.vote.generalelection.SwipeDisabledViewPager>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

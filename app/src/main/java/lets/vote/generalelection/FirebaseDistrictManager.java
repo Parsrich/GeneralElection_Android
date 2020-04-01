@@ -15,6 +15,7 @@ class FirebaseDistrictManager {
     private static DatabaseReference rootRef;
     private static DatabaseReference dbRef;
     private static MutableLiveData<Map<String,Object>> districtMutableLiveData;
+    private static MutableLiveData<Map<String,Object>> candidateNameMutableLiveData;
 
 
     static void setup() {
@@ -53,6 +54,27 @@ class FirebaseDistrictManager {
                     });
         }
         return districtMutableLiveData;
+    }
+
+    public static MutableLiveData<Map<String,Object>> getCandidateNameMap() {
+        if (candidateNameMutableLiveData == null ) {
+            database = FirebaseDatabase.getInstance();
+            candidateNameMutableLiveData = new MutableLiveData<>();
+            rootRef = database.getReference("/");
+            rootRef.child("name")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // How to return this value?
+                            Map<String, Object> district = (Map<String, Object>)dataSnapshot.getValue(Object.class);
+                            candidateNameMutableLiveData.setValue(district);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+        }
+        return candidateNameMutableLiveData;
     }
 }
 

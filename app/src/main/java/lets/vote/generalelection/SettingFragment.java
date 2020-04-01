@@ -13,9 +13,16 @@ import android.view.ViewGroup;
  * A simple {@link Fragment} subclass.
  */
 public class SettingFragment extends Fragment {
-
+    private static SettingFragment instance;
     public SettingFragment() {
         // Required empty public constructor
+    }
+
+    public static Fragment getInstance() {
+        if(instance == null) {
+            instance = new SettingFragment();
+        }
+        return instance;
     }
 
 

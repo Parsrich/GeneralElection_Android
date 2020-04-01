@@ -20,24 +20,24 @@
         app:layout_constraintVertical_bias="0.43"
         />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/searchCandidate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="30dp"
-        android:padding="20dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/search_border"
 
+        android:fontFamily="@font/gmarket_sans_medium"
+        android:hint="이름 입력"
+        android:padding="20dp"
+        android:singleLine="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchCandidateTitle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0"
-        android:background="@drawable/search_border"
-        android:hint="이름 입력"
-        android:fontFamily="@font/gmarket_sans_medium"
-        />
+        app:layout_constraintVertical_bias="0" />
 
     <TextView
         android:layout_width="wrap_content"
