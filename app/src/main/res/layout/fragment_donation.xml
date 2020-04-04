@@ -7,7 +7,7 @@
     tools:context=".DonationFragment"
     android:orientation="vertical"
     android:padding="25dp"
-    android:paddingEnd="37dp"
+    android:paddingEnd="35dp"
     android:paddingBottom="10dp"
     android:background="@drawable/fragment_round_corner">
 

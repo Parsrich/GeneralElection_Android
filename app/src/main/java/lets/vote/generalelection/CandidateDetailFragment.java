@@ -82,14 +82,6 @@ public class CandidateDetailFragment extends Fragment {
         TextView district = rootView.findViewById(R.id.candidateDetailDistrict);
         TextView document = rootView.findViewById(R.id.candidateDetailShowDocument);
         Button zoom = rootView.findViewById(R.id.zoomBtn);
-        final ViewPager viewPager = getActivity().findViewById(R.id.viewPager);
-//        final int paddingTop = viewPager.getPaddingTop();
-//        final int paddingBottom = viewPager.getPaddingBottom();
-//        final int paddingLeft = viewPager.getPaddingLeft();
-//        final int paddingRight = viewPager.getPaddingRight();
-
-//        final ConstraintLayout zoomedImageLayout = rootView.findViewById(R.id.zoomedImageLayout);
-//        final ImageView zoomedImage = rootView.findViewById(R.id.zoomedImage);
 
         zoom.setOnClickListener(new View.OnClickListener() {
             @Override
