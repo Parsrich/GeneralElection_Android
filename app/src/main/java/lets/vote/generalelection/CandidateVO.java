@@ -100,6 +100,7 @@ public class CandidateVO implements Serializable,Comparable<CandidateVO>{
         setRegCount(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_REG_COUNT)));
         setRegCount(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_REG_COUNT)));
         setRecommend(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_RECOMMEND)));
+        Log.d("test", "CandidateVO: " + getName());
     }
 
     public String getId() {
@@ -288,6 +289,14 @@ public class CandidateVO implements Serializable,Comparable<CandidateVO>{
 
     @Override
     public int compareTo(CandidateVO c) {
+        if (c.number.equals("")){
+            c.number = "999";
+        }
+        if (this.number.equals("")){
+            this.number = "999";
+        }
+
+
         if (Integer.parseInt(this.number) < Integer.parseInt(c.getNumber())) {
             return -1;
         } else if (Integer.parseInt(this.number) > Integer.parseInt(c.getNumber())) {

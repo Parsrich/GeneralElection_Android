@@ -1,5 +1,10 @@
 package lets.vote.generalelection;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,21 +12,30 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PartyListFragment extends Fragment {
-    RecyclerView partyRecyclerView;
+    private RecyclerView partyRecyclerView;
     private static PartyListFragment instance;
 
     public PartyListFragment() {
@@ -40,27 +54,21 @@ public class PartyListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.fragment_party_list, container, false);
 
-        List<PartyVO> partyVOList = new ArrayList<>();
-        PartyVO tempVO1 = new PartyVO();
-        tempVO1.setName("더불어민주당");
-        tempVO1.setImageRes(R.drawable.party1);
-        partyVOList.add(tempVO1);
+        List<PartyVO> partyNameList = new ArrayList<>();
+        Map<String, String> logoMap = PartyInfo.getPartyLogoMap();
+        Map<String, Integer> numberMap = PartyInfo.getPartyNumberMap();
 
-        PartyVO tempVO2 = new PartyVO();
-        tempVO2.setName("미래통합당");
-        tempVO2.setImageRes(R.drawable.party2);
-        partyVOList.add(tempVO2);
-
-        PartyVO tempVO3 = new PartyVO();
-        tempVO3.setName("미래한국당");
-        tempVO3.setImageRes(R.drawable.party3);
-        partyVOList.add(tempVO3);
+        for (String name : logoMap.keySet()){
+            partyNameList.add(new PartyVO(name, logoMap.get(name), numberMap.get(name)));
+        }
+        Collections.sort(partyNameList);
 
         partyRecyclerView = rootView.findViewById(R.id.partyList);
         partyRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-        partyRecyclerView.setAdapter(new PartyListAdapter(partyVOList));
+        partyRecyclerView.setAdapter(new PartyListAdapter(partyNameList));
 
         return rootView;
     }
@@ -83,7 +91,55 @@ public class PartyListFragment extends Fragment {
         public void onBindViewHolder(@NonNull PartyViewHolder holder, int position) {
             PartyVO vo = mList.get(position);
             holder.partyName.setText(vo.getName());
-            holder.partyImage.setImageResource(vo.imageRes);
+
+            Glide.with(holder.itemView.getContext()).load(vo.getUrl()).into(holder.partyImage);
+
+            if(vo.getName().equals("가자!평화인권당")){
+                holder.partyImage.setBackgroundColor(Color.parseColor("#65A032"));
+            }else{
+                holder.partyImage.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+            holder.itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    CandidateDBHelper helper = new CandidateDBHelper(getContext());
+                    SQLiteDatabase db=helper.getReadableDatabase();
+                    String sql = "SELECT * FROM "+CandidateContract.CandidateEntry.TABLE_NAME
+                            +" WHERE party ='"+ ((TextView)v.findViewById(R.id.partyName)).getText().toString().trim()
+                            +"' AND recommend is NOT NULL";
+                    Cursor cursor=db.rawQuery(sql,null);
+                    Fragment proportionalListFragment = ProportionalListFragment.getInstance();
+                    Bundle bundle = new Bundle();
+
+                    Log.d("test", "onClick: " + cursor.getCount());
+
+                    if(cursor.getCount() > 0){
+                        List<CandidateVO> voList = new ArrayList<>();
+                        while (cursor.moveToNext()){
+                            voList.add(new CandidateVO(cursor));
+                        }
+                        Collections.sort(voList,new Comparator<CandidateVO>(){
+                            @Override
+                            public int compare(CandidateVO c1, CandidateVO c2) {
+                                if (Integer.parseInt(c1.recommend) < Integer.parseInt(c2.getRecommend())) {
+                                    return -1;
+                                } else if (Integer.parseInt(c1.recommend) > Integer.parseInt(c2.getRecommend())) {
+                                    return 1;
+                                }
+                                return 0;
+                            }
+
+                        } );
+                        bundle.putSerializable("list", (Serializable) voList);
+                    }
+                    bundle.putString("partyName", ((TextView)v.findViewById(R.id.partyName)).getText().toString());
+
+                    proportionalListFragment.setArguments(bundle);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,proportionalListFragment).addToBackStack(null).commit();
+
+                }
+            });
+
         }
 
         @Override
@@ -99,7 +155,6 @@ public class PartyListFragment extends Fragment {
             super(view);
             partyName = view.findViewById(R.id.partyName);
             partyImage = view.findViewById(R.id.partyImage);
-
         }
 
     }

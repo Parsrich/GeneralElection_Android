@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ public class DistrictListFragment extends Fragment {
     private LinearLayout guGroup;
     private LinearLayout dongGroup;
 
+    private ProgressBar progressBar;
 
 
     private int nowElection = 0;
@@ -83,6 +85,7 @@ public class DistrictListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_district_list, container, false);
+        progressBar = rootView.findViewById(R.id.districtProgress);
 
         recyclerView = rootView.findViewById(R.id.districtList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -152,6 +155,7 @@ public class DistrictListFragment extends Fragment {
 
         /* 데이터 가져오기 */
         if (districtMap == null || districtMap.size() == 0 ){
+            progressBar.setVisibility(View.VISIBLE);
             FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
                 @Override
                 public void onChanged(Map<String, Object> resultMap) {
@@ -162,6 +166,7 @@ public class DistrictListFragment extends Fragment {
                     districtList.addAll(getDistrictList(districtHistoryStack));
                     Log.d("test",districtList.toString());
                     districtAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         } else {

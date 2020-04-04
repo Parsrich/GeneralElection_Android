@@ -3,16 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fragment_round_corner"
-    android:paddingEnd="13dp"
-    android:paddingBottom="10dp"
-    tools:context=".GuideFragment"
-    >
+    tools:context=".CandidateWebInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <WebView
+        android:id="@+id/infoWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="안내 페이지" />
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

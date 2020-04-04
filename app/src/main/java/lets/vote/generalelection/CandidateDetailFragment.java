@@ -7,23 +7,24 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -79,6 +80,27 @@ public class CandidateDetailFragment extends Fragment {
         TextView address = rootView.findViewById(R.id.candidateDetailAddress);
         ImageView candidateImage = rootView.findViewById(R.id.candidateDetailImage);
         TextView district = rootView.findViewById(R.id.candidateDetailDistrict);
+        TextView document = rootView.findViewById(R.id.candidateDetailShowDocument);
+        Button zoom = rootView.findViewById(R.id.zoomBtn);
+        final ViewPager viewPager = getActivity().findViewById(R.id.viewPager);
+//        final int paddingTop = viewPager.getPaddingTop();
+//        final int paddingBottom = viewPager.getPaddingBottom();
+//        final int paddingLeft = viewPager.getPaddingLeft();
+//        final int paddingRight = viewPager.getPaddingRight();
+
+//        final ConstraintLayout zoomedImageLayout = rootView.findViewById(R.id.zoomedImageLayout);
+//        final ImageView zoomedImage = rootView.findViewById(R.id.zoomedImage);
+
+        zoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment zoomedImageFragment = new ZoomedImageFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("vo",candidateVO);
+                zoomedImageFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.mainContainer,zoomedImageFragment).addToBackStack(null).commit();
+            }
+        });
 
         String districtText = "비례대표";
         String numberText = "번호"+candidateVO.getRecommend();
@@ -92,12 +114,12 @@ public class CandidateDetailFragment extends Fragment {
 
         party.setText(candidateVO.getParty());
 
-        String color = PartyColor.getPartyColor(candidateVO.getParty());
+        String color = PartyInfo.getPartyColor(candidateVO.getParty());
         GradientDrawable drawable = (GradientDrawable) getResources().getDrawable(R.drawable.round_corner);
         if (color != null) {
             drawable.setColor(Color.parseColor(color));
         }else{
-            drawable.setColor(Color.parseColor(PartyColor.getPartyColor("기본값")));
+            drawable.setColor(Color.parseColor(PartyInfo.getPartyColor("기본값")));
         }
         number.setBackground(drawable);
         party.setBackground(drawable);
@@ -109,6 +131,25 @@ public class CandidateDetailFragment extends Fragment {
         String genderText = "/"+candidateVO.getGender();
         gender.setText(genderText);
         Glide.with(rootView.getContext()).load(candidateVO.imageUrl).into(candidateImage);
+        candidateImage.setBackground(getResources().getDrawable(R.drawable.gray_border));
+        candidateImage.setPadding(5,5,5,5);
+        final Fragment candidateWebInfoFragment = CandidateWebInfoFragment.getInstance();
+        final Bundle bundle = new Bundle();
+        bundle.putString("candidateId",candidateVO.getId());
+
+        document.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ViewPager viewPager = getActivity().findViewById(R.id.viewPager);
+                bundle.putInt("top",viewPager.getPaddingTop());
+                bundle.putInt("left",viewPager.getPaddingLeft());
+                bundle.putInt("right",viewPager.getPaddingRight());
+                bundle.putInt("bottom",viewPager.getPaddingBottom());
+                candidateWebInfoFragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,candidateWebInfoFragment).addToBackStack(null).commit();
+            }
+        });
 
         List<CandidateInfoVO> list = new ArrayList<>();
 
@@ -168,7 +209,5 @@ public class CandidateDetailFragment extends Fragment {
             candidateInfoTitle = itemView.findViewById(R.id.candidateInfoTitle);
             candidateInfoContent = itemView.findViewById(R.id.candidateInfoContent);
         }
-
-
     }
 }

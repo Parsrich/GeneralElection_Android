@@ -27,13 +27,13 @@ import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity {
     private static Map<String,Object> candidateNameMap;
-    private static String[] candidateNameArray;
     public SwipeDisabledViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         if (candidateNameMap == null || candidateNameMap.size() == 0) {
@@ -83,33 +83,24 @@ public class MainActivity extends AppCompatActivity {
                                 values.put(CandidateContract.CandidateEntry.COLUMN_NAME_TAX_PAYMENT, temp.getTaxPayment());
                                 values.put(CandidateContract.CandidateEntry.COLUMN_NAME_STATUS, temp.getStatus());
                                 values.put(CandidateContract.CandidateEntry.COLUMN_NAME_RECOMMEND, temp.getRecommend());
-                                long newRowId = db.insert(CandidateContract.CandidateEntry.TABLE_NAME, null, values);
-//                                Log.d("test", "newRowId" + newRowId+"");
+                                db.insert(CandidateContract.CandidateEntry.TABLE_NAME, null, values);
                             }
-//                            Log.d("test", "다름 "+candidateNameMap.size());
-//                            Log.d("test", "다름 "+cursor.getCount());
                         }
                     }
                     db.close();
                     Log.d("test", "resultMap.toString() " + resultMap.toString());
-                    Log.d("test", "resultMap.toString() " + Arrays.toString(candidateNameArray));
                 }
             });
         }
-
-
-
-
 
         viewPager = findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter =
                 new ViewPagerAdapter(getSupportFragmentManager(),
                         FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
-        Fragment mainFragment = MainFragment.getInstance();
-        viewPagerAdapter.addFragment(new GuideFragment());
-        viewPagerAdapter.addFragment(mainFragment);
-        viewPagerAdapter.addFragment(new PartyListFragment());
+        viewPagerAdapter.addFragment(GuideFragment.getInstance());
+        viewPagerAdapter.addFragment(MainFragment.getInstance());
+        viewPagerAdapter.addFragment(DefaultSettingFragment.getInstance());
 
         viewPager.setAdapter(viewPagerAdapter);
 
@@ -117,18 +108,18 @@ public class MainActivity extends AppCompatActivity {
 
         tabs.setupWithViewPager(viewPager);
 
-        ImageView imageViewTab1= new ImageView(MainActivity.this);
-        imageViewTab1.setImageResource(R.drawable.ic_tab1_1);
+        final ImageView imageViewTab1= new ImageView(MainActivity.this);
+        imageViewTab1.setImageResource(R.drawable.ic_tab1);
         imageViewTab1.setPadding(30,10,30,20);
         tabs.getTabAt(0).setCustomView(imageViewTab1);
 
-        ImageView imageViewTab2= new ImageView(MainActivity.this);
+        final ImageView imageViewTab2= new ImageView(MainActivity.this);
         imageViewTab2.setImageResource(R.drawable.ic_tab2_1);
         imageViewTab2.setPadding(30,10,30,20);
         tabs.getTabAt(1).setCustomView(imageViewTab2);
 
-        ImageView imageViewTab3= new ImageView(MainActivity.this);
-        imageViewTab3.setImageResource(R.drawable.ic_tab3_1);
+        final ImageView imageViewTab3= new ImageView(MainActivity.this);
+        imageViewTab3.setImageResource(R.drawable.ic_tab3);
         imageViewTab3.setPadding(30,10,30,20);
         tabs.getTabAt(2).setCustomView(imageViewTab3);
 
@@ -138,6 +129,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition(),false);
+
+                if(tab.getPosition()==0){
+                    imageViewTab1.setImageResource(R.drawable.ic_tab1_1);
+                    imageViewTab2.setImageResource(R.drawable.ic_tab2);
+                    imageViewTab3.setImageResource(R.drawable.ic_tab3);
+                }else if(tab.getPosition()==1){
+
+                    imageViewTab1.setImageResource(R.drawable.ic_tab1);
+                    imageViewTab2.setImageResource(R.drawable.ic_tab2_1);
+                    imageViewTab3.setImageResource(R.drawable.ic_tab3);
+
+                }else if(tab.getPosition()==2){
+
+                    imageViewTab1.setImageResource(R.drawable.ic_tab1);
+                    imageViewTab2.setImageResource(R.drawable.ic_tab2);
+                    imageViewTab3.setImageResource(R.drawable.ic_tab3_1);
+
+                }
 
             }
 
@@ -150,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
                 Log.d("test", "onTabReselected: ");
                 if(tab.getPosition() == 1) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }else if(tab.getPosition() == 2){
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/fragment_round_corner"
     android:padding="7dp"
+    android:paddingBottom="10dp"
+    android:paddingEnd="15dp"
     tools:context=".SearchCandidateListFragment">
 
     <TextView

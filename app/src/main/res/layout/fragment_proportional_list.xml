@@ -2,54 +2,38 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/districtContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fragment_round_corner"
     android:padding="7dp"
-    tools:context=".CandidateListFragment">
+    android:paddingBottom="10dp"
+    android:paddingEnd="15dp"
+    tools:context=".ProportionalListFragment">
 
-    <ImageView
-        android:id="@+id/dropArrow"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_arrow_drop_down_24px"
-        app:layout_constraintBottom_toBottomOf="@id/partySpinner"
-        app:layout_constraintDimensionRatio="0.7:1"
-        app:layout_constraintRight_toRightOf="@id/partySpinner"
-        app:layout_constraintTop_toTopOf="@id/partySpinner" />
-
-    <ImageView
-        android:id="@+id/searchDistrictImage"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_map_pin"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@id/searchDistrict"
-        app:layout_constraintBottom_toBottomOf="@id/searchDistrict"
-        app:layout_constraintLeft_toLeftOf="@id/partySpinner"
-        app:layout_constraintRight_toLeftOf="@id/searchDistrict"
-        />
-
-    <Spinner
-        android:id="@+id/partySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/gray_border"
-        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/ProportionalName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gmarket_sans_medium"
+        android:layout_marginEnd="5dp"
+        android:textColor="@color/birthFontColor"
+        tools:text="@string/party_list"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <View
         android:id="@+id/recyclerViewTopHr"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:background="@android:color/darker_gray"
         android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toBottomOf="@id/partySpinner"
-        app:layout_constraintBottom_toTopOf="@id/candidateList"/>
+        app:layout_constraintTop_toBottomOf="@id/ProportionalName"
+        app:layout_constraintBottom_toTopOf="@id/PartyCandidateList"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/candidateList"
+        android:id="@+id/PartyCandidateList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
@@ -58,14 +42,41 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerViewTopHr"
         tools:listitem="@layout/item_candidate" />
+    <LinearLayout
+        android:id="@+id/noList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/PartyCandidateList"
+        app:layout_constraintLeft_toLeftOf="@id/PartyCandidateList"
+        app:layout_constraintRight_toRightOf="@id/PartyCandidateList"
+        app:layout_constraintTop_toTopOf="@id/PartyCandidateList"
+        app:layout_constraintVertical_bias="0.1">
 
+        <ImageView
+            android:id="@+id/noListImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_not_interested" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/gmarket_sans_medium"
+            android:text="@string/no_list"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
     <View
         android:id="@+id/recyclerViewBottomHr"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:layout_marginBottom="15dp"
-        app:layout_constraintTop_toBottomOf="@id/candidateList"
+        app:layout_constraintTop_toBottomOf="@id/PartyCandidateList"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

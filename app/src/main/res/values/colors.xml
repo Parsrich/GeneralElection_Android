@@ -27,5 +27,8 @@
 <!--nav 비활성    -->
     <color name="navDeactivate">#CECCCD</color>
 
+    <color name="action_start">#7269EA</color>
+    <color name="action_end">#AA80FC</color>
+
 
 </resources>

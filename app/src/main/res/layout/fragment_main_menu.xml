@@ -4,7 +4,20 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <TextView
+        android:id="@+id/mainTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="43sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        android:fontFamily="@font/gmarket_sans_medium"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:text="@string/main_name"/>
 
     <ImageView
         android:id="@+id/mainGuideBtn"
@@ -19,7 +32,7 @@
 
     <TextView
         android:id="@+id/mainGuideText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="2dp"
@@ -29,7 +42,7 @@
         android:textColor="@color/candidateSearchFontColor"
         android:textSize="18sp"
         android:fontFamily="@font/gmarket_sans_bold"
-        android:text="총선 안내"
+        android:text="@string/main_btn_1"
         />
 
 
@@ -45,7 +58,7 @@
 
     <TextView
         android:id="@+id/mainPartyText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="2dp"
@@ -55,7 +68,7 @@
         android:textColor="@color/candidateSearchFontColor"
         android:textSize="18sp"
         android:fontFamily="@font/gmarket_sans_bold"
-        android:text="정당 확인"
+        android:text="@string/main_btn_2"
 
         />
 
@@ -71,7 +84,7 @@
         />
     <TextView
         android:id="@+id/mainDistrictText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="2dp"
@@ -81,7 +94,7 @@
         android:textColor="@color/candidateSearchFontColor"
         android:fontFamily="@font/gmarket_sans_bold"
         android:textSize="18sp"
-        android:text="지역구 검색"
+        android:text="@string/main_btn_3"
         />
 
 
@@ -99,7 +112,7 @@
 
     <TextView
         android:id="@+id/mainCandidateText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="2dp"
@@ -109,6 +122,6 @@
         android:textColor="@color/candidateSearchFontColor"
         android:fontFamily="@font/gmarket_sans_bold"
         android:textSize="18sp"
-        android:text="후보자 검색"
+        android:text="@string/main_btn_4"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

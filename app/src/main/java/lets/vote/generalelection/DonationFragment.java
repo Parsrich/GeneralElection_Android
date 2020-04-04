@@ -12,25 +12,24 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuideFragment extends Fragment {
-    private static GuideFragment instance;
-
-    public GuideFragment() {
+public class DonationFragment extends Fragment {
+    private static DonationFragment instance;
+    public DonationFragment() {
         // Required empty public constructor
     }
-
-    public static Fragment getInstance() {
+    public static DonationFragment getInstance(){
         if (instance == null) {
-            instance = new GuideFragment();
+            instance = new DonationFragment();
         }
         return instance;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_guide, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_donation, container, false);
+
+
+        return rootView;
     }
 }

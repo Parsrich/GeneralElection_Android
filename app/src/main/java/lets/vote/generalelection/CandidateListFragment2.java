@@ -285,13 +285,13 @@ public class CandidateListFragment2 extends Fragment {
             final CandidateVO vo = mList.get(position);
 
             holder.party.setText(vo.party);
-            String color = PartyColor.getPartyColor(vo.party);
+            String color = PartyInfo.getPartyColor(vo.party);
             GradientDrawable drawable = (GradientDrawable) getResources().getDrawable(R.drawable.round_corner);
 
             if (color != null) {
                 drawable.setColor(Color.parseColor(color));
             }else{
-                drawable.setColor(Color.parseColor(PartyColor.getPartyColor("기본값")));
+                drawable.setColor(Color.parseColor(PartyInfo.getPartyColor("기본값")));
             }
             holder.party.setBackground(drawable);
             holder.itemView.setTag(vo);

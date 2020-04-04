@@ -88,8 +88,6 @@ public class SearchCandidateFragment extends Fragment {
                         Cursor cursor = db.rawQuery(sql,null);
                         Log.d("test", cursor.getCount()+" ");
 
-                        Toast.makeText(getContext(),cursor.getCount() +"",Toast.LENGTH_SHORT).show();
-
                         if (cursor.getCount() == 0){
                             Toast.makeText(getContext(),getResources().getString(R.string.no_result),Toast.LENGTH_SHORT).show();
 

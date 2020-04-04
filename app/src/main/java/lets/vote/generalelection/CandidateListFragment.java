@@ -1,7 +1,6 @@
 package lets.vote.generalelection;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -9,22 +8,20 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,12 +31,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Stack;
 
 
@@ -57,17 +51,25 @@ public class CandidateListFragment extends Fragment {
 
     private Stack<String> stack = new Stack<>();
     private int nowElection;
+    private ProgressBar progressBar;
+    private LinearLayout noListLayout;
 
     private ValueEventListener candidateListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            progressBar.setVisibility(View.VISIBLE);
             ArrayList<Object> value = (ArrayList<Object>) dataSnapshot.getValue();
             candidateList.clear();
             for( Object candidate :value){
                 candidateList.add(new CandidateVO((Map<String,Object>)candidate));
             }
             Collections.sort(candidateList);
+            progressBar.setVisibility(View.GONE);
             candidateAdapter.notifyDataSetChanged();
+            if(candidateList.size() == 0){
+                noListLayout.setVisibility(View.VISIBLE);
+            }
         }
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -120,9 +122,11 @@ public class CandidateListFragment extends Fragment {
 
 
         View rootView = inflater.inflate(R.layout.fragment_candidate_list, container, false);
-
+        progressBar = rootView.findViewById(R.id.districtProgress);
+        noListLayout = rootView.findViewById(R.id.noList);
         TextView searchDistrict = rootView.findViewById(R.id.searchDistrict);
         Log.d("test", "현재 지역구 " + Election.values()[0].toString());
+        progressBar.setVisibility(View.VISIBLE);
 
         // 현재 지역구
         searchDistrict.setText(stack.get(0)+" "+electionMap.get(Election.values()[nowElection].toString()).toString());
@@ -169,7 +173,6 @@ public class CandidateListFragment extends Fragment {
                     String path = Election.values()[nowElection].toString()+"/"+stack.get(0)+"_"+getDistrictList(stack).get(0);
 
                     FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(candidateListener);
-
                 }
             }
 
@@ -241,7 +244,7 @@ public class CandidateListFragment extends Fragment {
             final CandidateVO vo = mList.get(position);
 
             holder.party.setText(vo.party);
-            String color = PartyColor.getPartyColor(vo.party);
+            String color = PartyInfo.getPartyColor(vo.party);
             GradientDrawable drawable = (GradientDrawable) getResources().getDrawable(R.drawable.round_corner);
             GradientDrawable numberDrawable = (GradientDrawable) getResources().getDrawable(R.drawable.number_round_corner);
 
@@ -249,8 +252,8 @@ public class CandidateListFragment extends Fragment {
                 drawable.setColor(Color.parseColor(color));
                 numberDrawable.setColor(Color.parseColor(color));
             }else{
-                drawable.setColor(Color.parseColor(PartyColor.getPartyColor("기본값")));
-                numberDrawable.setColor(Color.parseColor(PartyColor.getPartyColor("기본값")));
+                drawable.setColor(Color.parseColor(PartyInfo.getPartyColor("기본값")));
+                numberDrawable.setColor(Color.parseColor(PartyInfo.getPartyColor("기본값")));
             }
             holder.party.setBackground(drawable);
             holder.number.setBackground(numberDrawable);
