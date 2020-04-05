@@ -1,23 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:background="@drawable/title_shadow"
+        android:fontFamily="@font/gmarket_sans_bold"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:text="@string/guide_title"
+        android:textSize="30sp"/>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fragment_round_corner"
-    android:paddingEnd="10dp"
-    android:paddingBottom="7dp"
-    tools:context=".GuideFragment"
-    >
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    tools:context=".GuideFragment">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="안내 페이지"
-            android:textAlignment="textEnd" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
 
 
+    <TextView
+        android:id="@+id/slideTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textAlignment="center"
+        android:fontFamily="@font/gmarket_sans_bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textSize="24sp"
+        android:text="@string/how_to_vote"/>
+
+    <com.aqoong.lib.slidephotoviewer.SlidePhotoViewer
+        app:layout_constraintTop_toBottomOf="@id/slideTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/slideViewer"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:sidePreview="false"
+        app:useIndicator="true"
+        app:autoSlide="false"
+        app:maxSize="10"
+        app:layout_constraintDimensionRatio="1:1"
+        />
+    <TextView
+        android:id="@+id/youtubeTitle"
+        android:textAlignment="center"
+        android:fontFamily="@font/gmarket_sans_bold"
+        android:layout_marginTop="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textSize="24sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/slideViewer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/youtube_title"/>
+    <ImageView
+        android:id="@+id/youtubeImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/youtubeTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintDimensionRatio="16:9"/>
+        <ImageView
+            android:id="@+id/youtubelogoImage"
+            android:layout_width="90dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_youtube"
+            app:layout_constraintRight_toRightOf="@id/youtubeImage"
+            app:layout_constraintLeft_toLeftOf="@id/youtubeImage"
+            app:layout_constraintTop_toTopOf="@id/youtubeImage"
+            app:layout_constraintBottom_toBottomOf="@id/youtubeImage"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

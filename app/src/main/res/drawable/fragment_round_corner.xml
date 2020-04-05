@@ -28,7 +28,7 @@ android:shape="oval" >
 <!--            android:type="linear"-->
 <!--            android:useLevel="false" />-->
         <gradient
-            android:startColor="#40000000"
+            android:startColor="#92000000"
             android:endColor="#05000000"
             android:centerX="40%"
             android:centerY="60%"
@@ -44,8 +44,8 @@ android:shape="oval" >
 
     <item
         android:right="10dp"
-        android:left="1dp"
-        android:top="0dp"
+        android:left="12dp"
+        android:top="12dp"
         android:bottom="7dp">
         <shape android:shape="rectangle">
             <corners android:radius="10dp"/>

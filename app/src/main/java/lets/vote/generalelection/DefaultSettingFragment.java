@@ -28,8 +28,8 @@ public class DefaultSettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_default_setting, container, false);
-
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.defaultSettingContainer,SettingFragment.getInstance()).commit();
+        Fragment settingFragment = new SettingFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.defaultSettingContainer,settingFragment).commit();
 
 
         return rootView;

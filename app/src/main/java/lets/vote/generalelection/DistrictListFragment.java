@@ -85,6 +85,7 @@ public class DistrictListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_district_list, container, false);
+
         progressBar = rootView.findViewById(R.id.districtProgress);
 
         recyclerView = rootView.findViewById(R.id.districtList);

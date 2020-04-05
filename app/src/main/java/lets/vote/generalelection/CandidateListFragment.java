@@ -119,8 +119,6 @@ public class CandidateListFragment extends Fragment {
             }
         }
 
-
-
         View rootView = inflater.inflate(R.layout.fragment_candidate_list, container, false);
         progressBar = rootView.findViewById(R.id.districtProgress);
         noListLayout = rootView.findViewById(R.id.noList);

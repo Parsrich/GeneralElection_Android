@@ -9,11 +9,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +30,13 @@ import androidx.viewpager.widget.ViewPager;
 public class MainActivity extends AppCompatActivity {
     private static Map<String,Object> candidateNameMap;
     public SwipeDisabledViewPager viewPager;
+    static final String [] lastTitleData = new String[3];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         if (candidateNameMap == null || candidateNameMap.size() == 0) {
             FirebaseDistrictManager.getCandidateNameMap().observe(this, new Observer<Map<String, Object>>() {
@@ -145,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                     imageViewTab1.setImageResource(R.drawable.ic_tab1);
                     imageViewTab2.setImageResource(R.drawable.ic_tab2);
                     imageViewTab3.setImageResource(R.drawable.ic_tab3_1);
-
                 }
 
             }
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }else if(tab.getPosition() == 2){
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    fragmentManager.popBackStackImmediate("setting",FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
 
             }

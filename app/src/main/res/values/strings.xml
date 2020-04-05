@@ -3,6 +3,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="guide_title">투표 안내</string>
+    <string name="setting_title">설정</string>
+    <string name="search_district_title">지역구 검색</string>
+    <string name="candidate_list_title">후보자 리스트</string>
+    <string name="candidate_detail_title">후보자 상세</string>
+    <string name="candidate_search_title">후보자 검색</string>
+    <string name="party_list_title">정당 확인</string>
+    <string name="party_detail_title">정당 상세</string>
+    <string name="party_issue_title">정당 이슈</string>
+
     <string name="si_title">시∙도</string>
     <string name="gu_title">구∙시∙군</string>
     <string name="dong_title">동∙읍∙면</string>
@@ -32,11 +43,13 @@
     <string name="search_keyword">에 대한 검색결과입니다.</string>
     <string name="party_list"> 비례대표 명단</string>
     <string name="main_btn_1">총선 안내</string>
-    <string name="main_btn_2">비례대표 확인</string>
+    <string name="main_btn_2">정당 확인</string>
     <string name="main_btn_3">지역구 검색</string>
     <string name="main_btn_4">후보자 검색</string>
     <string name="main_name">대한민국 총선</string>
     <string name="no_list">해당 후보자가\n 없습니다.</string>
+    <string name="youtube_title">제 21대 국회의원 선출안내</string>
+    <string name="how_to_vote">투표방법</string>
     <string-array name="selectElection">
         <item>국회의원선거</item>
         <item>구·시·군의 장선거</item>
