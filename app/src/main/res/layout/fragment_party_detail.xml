@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".PartyDetailFragment">
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:background="@drawable/title_shadow"
+    android:fontFamily="@font/gmarket_sans_bold"
+    android:textAlignment="center"
+    android:textColor="@color/white"
+    android:text="@string/party_list_title"
+    android:textSize="30sp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fragment_round_corner"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <ImageView
+            android:id="@+id/partyDetailImage"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_can"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+<!--        <TextView-->
+<!--            android:id="@+id/partyDetailName"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/gmarket_sans_bold"-->
+<!--            android:textColor="@color/common_google_signin_btn_text_light_pressed"-->
+<!--            android:textSize="23sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/partyDetailImage"-->
+<!--            app:layout_constraintLeft_toRightOf="@id/partyDetailImage"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/partyDetailImage"-->
+<!--            app:layout_constraintVertical_bias="0.9"-->
+<!--            tools:text="더불어민주당" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/partyDetailImage"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:src="@drawable/ic_can"-->
+<!--            />-->
+
+
+<!--        <Button-->
+<!--            android:id="@+id/donationBtn1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:background="@drawable/ic_price_button"-->
+<!--            android:fontFamily="@font/gmarket_sans_medium"-->
+<!--            android:text="@string/donation_price1"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/canImage"-->
+<!--            app:layout_constraintHorizontal_bias="1"-->
+<!--            app:layout_constraintLeft_toRightOf="@id/donationTitle1"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/canImage"-->
+<!--            app:layout_constraintDimensionRatio="2.3:1"-->
+<!--            />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
