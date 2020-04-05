@@ -16,7 +16,7 @@
     android:fontFamily="@font/gmarket_sans_bold"
     android:textAlignment="center"
     android:textColor="@color/white"
-    android:text="@string/party_list_title"
+    android:text="@string/party_detail_title"
     android:textSize="30sp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,53 +27,164 @@
         android:paddingTop="20dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
 
         <ImageView
-            android:id="@+id/partyDetailImage"
+            android:id="@+id/partyDetailIcon"
             android:layout_width="0dp"
             android:layout_height="35dp"
-            android:src="@drawable/ic_can"
+            android:src="@drawable/ic_main2"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             />
 
-<!--        <TextView-->
-<!--            android:id="@+id/partyDetailName"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/gmarket_sans_bold"-->
-<!--            android:textColor="@color/common_google_signin_btn_text_light_pressed"-->
-<!--            android:textSize="23sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/partyDetailImage"-->
-<!--            app:layout_constraintLeft_toRightOf="@id/partyDetailImage"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/partyDetailImage"-->
-<!--            app:layout_constraintVertical_bias="0.9"-->
-<!--            tools:text="더불어민주당" />-->
+        <TextView
+            android:id="@+id/partyDetailName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gmarket_sans_bold"
+            android:textColor="@color/common_google_signin_btn_text_light_pressed"
+            android:textSize="23sp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toTopOf="@id/partyDetailIcon"
+            app:layout_constraintBottom_toBottomOf="@id/partyDetailIcon"
+            app:layout_constraintLeft_toRightOf="@id/partyDetailIcon"
+            tools:text="더불어민주당" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/partyDetailImage"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:src="@drawable/ic_can"-->
-<!--            />-->
+        <TextView
+            android:id="@+id/partyDetailNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gmarket_sans_bold"
+            android:textColor="@color/navActivate"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toTopOf="@id/partyDetailIcon"
+            app:layout_constraintBottom_toBottomOf="@id/partyDetailIcon"
+            app:layout_constraintLeft_toRightOf="@id/partyDetailName"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            tools:text="비례정당번호 5" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/header"
 
+            android:layout_marginTop="5dp"
+            >
 
-<!--        <Button-->
-<!--            android:id="@+id/donationBtn1"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:background="@drawable/ic_price_button"-->
-<!--            android:fontFamily="@font/gmarket_sans_medium"-->
-<!--            android:text="@string/donation_price1"-->
-<!--            android:textSize="20sp"-->
-<!--            android:textColor="@color/white"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/canImage"-->
-<!--            app:layout_constraintHorizontal_bias="1"-->
-<!--            app:layout_constraintLeft_toRightOf="@id/donationTitle1"-->
-<!--            app:layout_constraintRight_toRightOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/canImage"-->
-<!--            app:layout_constraintDimensionRatio="2.3:1"-->
-<!--            />-->
+            <ImageView
+                android:id="@+id/partyLogo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/partyButtons"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/gray_border"
+                app:layout_constraintDimensionRatio="1.7:1"
+                android:src="@drawable/ic_generalelection"
+                />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/partyButtons"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:paddingStart="15dp"
+                app:layout_constraintTop_toTopOf="@id/partyLogo"
+                app:layout_constraintLeft_toRightOf="@id/partyLogo"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/partyLogo"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/proportionalList"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/ic_price_button"
+                    android:fontFamily="@font/gmarket_sans_bold"
+                    android:text="비례대표보기"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintVertical_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/partyIssue"
+                     />
+                <Button
+                    android:id="@+id/partyIssue"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/ic_price_button"
+                    android:fontFamily="@font/gmarket_sans_bold"
+                    android:text="정당이슈보기"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintVertical_weight="1"
+                    app:layout_constraintTop_toBottomOf="@id/proportionalList"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/headerDetail"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+            <ImageView
+                android:id="@+id/promiseIcon"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_paper"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/promiseTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gmarket_sans_bold"
+                android:textColor="@color/common_google_signin_btn_text_light_pressed"
+                android:textSize="23sp"
+                app:layout_constraintTop_toTopOf="@id/promiseIcon"
+                app:layout_constraintBottom_toBottomOf="@id/promiseIcon"
+                app:layout_constraintLeft_toRightOf="@id/promiseIcon"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                tools:text="더불어민주당 공약" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/promiseTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:listitem="@layout/item_party_detail"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </LinearLayout>
