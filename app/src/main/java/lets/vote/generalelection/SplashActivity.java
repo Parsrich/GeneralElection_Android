@@ -48,11 +48,17 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Boolean> task) {
                         Log.d("test", "android_db_version: " +mFirebaseRemoteConfig.getString("android_db_version"));
-                        int getVersion = Integer.parseInt(mFirebaseRemoteConfig.getString("android_db_version"));
+                        int getVersion = 1;
+                        if (!mFirebaseRemoteConfig.getString("android_db_version").equals("")){
+                            getVersion = Integer.parseInt(mFirebaseRemoteConfig.getString("android_db_version"));
+                        }
+
                         int localVersion = sharedPreferences.getInt("dbVersion",-1);
                         if (localVersion == -1 ){
+
                             getData();
                             sharedPreferences.edit().putInt("dbVersion",1).commit();
+                            Log.d("test", "최초" );
                         } else if ( getVersion != localVersion ){
                             //다르면 처리하고
 ////                            CandidateDBHelper helper=CandidateDBHelper.getInstance(getApplicationContext());
