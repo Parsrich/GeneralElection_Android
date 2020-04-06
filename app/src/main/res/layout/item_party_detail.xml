@@ -31,9 +31,10 @@
             tools:text="12"
             />
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentBackground"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="10"
+            android:layout_weight="12"
             android:textSize="18sp"
             android:textColor="@color/birthFontColor"
             >
@@ -63,6 +64,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/promiseContent"
+                app:layout_constraintVertical_bias="0.4"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

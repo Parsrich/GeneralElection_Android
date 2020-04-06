@@ -102,43 +102,56 @@ public class PartyListFragment extends Fragment {
             holder.itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    CandidateDBHelper helper = new CandidateDBHelper(getContext());
-                    SQLiteDatabase db=helper.getReadableDatabase();
-                    String sql = "SELECT * FROM "+CandidateContract.CandidateEntry.TABLE_NAME
-                            +" WHERE party ='"+ ((TextView)v.findViewById(R.id.partyName)).getText().toString().trim()
-                            +"' AND recommend is NOT NULL";
-                    Cursor cursor=db.rawQuery(sql,null);
-                    Fragment proportionalListFragment = ProportionalListFragment.getInstance();
+                    Fragment partyDetailFragment = PartyDetailFragment.getInstance();
+                    String partyName = ((TextView)v.findViewById(R.id.partyName)).getText().toString().trim();
                     Bundle bundle = new Bundle();
-
-                    Log.d("test", "onClick: " + cursor.getCount());
-
-                    if(cursor.getCount() > 0){
-                        List<CandidateVO> voList = new ArrayList<>();
-                        while (cursor.moveToNext()){
-                            voList.add(new CandidateVO(cursor));
-                        }
-                        Collections.sort(voList,new Comparator<CandidateVO>(){
-                            @Override
-                            public int compare(CandidateVO c1, CandidateVO c2) {
-                                if (Integer.parseInt(c1.recommend) < Integer.parseInt(c2.getRecommend())) {
-                                    return -1;
-                                } else if (Integer.parseInt(c1.recommend) > Integer.parseInt(c2.getRecommend())) {
-                                    return 1;
-                                }
-                                return 0;
-                            }
-
-                        } );
-                        bundle.putSerializable("list", (Serializable) voList);
-                    }
-                    bundle.putString("partyName", ((TextView)v.findViewById(R.id.partyName)).getText().toString());
-
-                    proportionalListFragment.setArguments(bundle);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,proportionalListFragment).addToBackStack(null).commit();
-
+                    bundle.putString("partName",partyName);
+                    partyDetailFragment.setArguments(bundle);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,partyDetailFragment).addToBackStack(null).commit();
                 }
             });
+
+
+//            holder.itemView.setOnClickListener(new View.OnClickListener(){
+//                @Override
+//                public void onClick(View v) {
+//                    CandidateDBHelper helper = new CandidateDBHelper(getContext());
+//                    SQLiteDatabase db=helper.getReadableDatabase();
+//                    String sql = "SELECT * FROM "+CandidateContract.CandidateEntry.TABLE_NAME
+//                            +" WHERE party ='"+ ((TextView)v.findViewById(R.id.partyName)).getText().toString().trim()
+//                            +"' AND recommend is NOT NULL";
+//                    Cursor cursor=db.rawQuery(sql,null);
+//                    Fragment proportionalListFragment = ProportionalListFragment.getInstance();
+//                    Bundle bundle = new Bundle();
+//
+//                    Log.d("test", "onClick: " + cursor.getCount());
+//
+//                    if(cursor.getCount() > 0){
+//                        List<CandidateVO> voList = new ArrayList<>();
+//                        while (cursor.moveToNext()){
+//                            voList.add(new CandidateVO(cursor));
+//                        }
+//                        Collections.sort(voList,new Comparator<CandidateVO>(){
+//                            @Override
+//                            public int compare(CandidateVO c1, CandidateVO c2) {
+//                                if (Integer.parseInt(c1.recommend) < Integer.parseInt(c2.getRecommend())) {
+//                                    return -1;
+//                                } else if (Integer.parseInt(c1.recommend) > Integer.parseInt(c2.getRecommend())) {
+//                                    return 1;
+//                                }
+//                                return 0;
+//                            }
+//
+//                        } );
+//                        bundle.putSerializable("list", (Serializable) voList);
+//                    }
+//                    bundle.putString("partyName", ((TextView)v.findViewById(R.id.partyName)).getText().toString());
+//
+//                    proportionalListFragment.setArguments(bundle);
+//                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,proportionalListFragment).addToBackStack(null).commit();
+//
+//                }
+//            });
 
         }
 

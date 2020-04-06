@@ -49,7 +49,7 @@ public class SettingFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<String> settingList = new ArrayList<>();
         settingList.add("후원하기");
-        settingList.add("오류문의");
+        settingList.add("문의하기");
         settingList.add("오픈소스 라이선스");
         settingList.add("앱 버전: 1.0.0");
         adapter = new SettingAdapter(settingList);
@@ -85,7 +85,7 @@ public class SettingFragment extends Fragment {
                         switch (position) {
                             case 0:
                                 // 후원하기 페이지
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.defaultSettingContainer,DonationFragment.getInstance()).addToBackStack(null).commit();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.defaultSettingContainer,DonationFragment.getInstance()).addToBackStack("setting").commit();
                                 break;
                             case 1:
                                 // 오류 문의
