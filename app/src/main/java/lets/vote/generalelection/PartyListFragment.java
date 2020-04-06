@@ -89,7 +89,7 @@ public class PartyListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull PartyViewHolder holder, int position) {
-            PartyVO vo = mList.get(position);
+            final PartyVO vo = mList.get(position);
             holder.partyName.setText(vo.getName());
 
             Glide.with(holder.itemView.getContext()).load(vo.getUrl()).into(holder.partyImage);
@@ -103,9 +103,8 @@ public class PartyListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Fragment partyDetailFragment = PartyDetailFragment.getInstance();
-                    String partyName = ((TextView)v.findViewById(R.id.partyName)).getText().toString().trim();
                     Bundle bundle = new Bundle();
-                    bundle.putString("partName",partyName);
+                    bundle.putString("partName",vo.getName());
                     partyDetailFragment.setArguments(bundle);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,partyDetailFragment).addToBackStack(null).commit();
                 }

@@ -56,7 +56,7 @@ public class SearchCandidateFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        helper=new CandidateDBHelper(getContext());
+        helper= CandidateDBHelper.getInstance(getContext());
         db=helper.getReadableDatabase();
 
         Cursor cursor=db.rawQuery("SELECT distinct name FROM "+CandidateContract.CandidateEntry.TABLE_NAME,null);
