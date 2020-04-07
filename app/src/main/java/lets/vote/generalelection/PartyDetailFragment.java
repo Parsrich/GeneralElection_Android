@@ -140,7 +140,7 @@ public class PartyDetailFragment extends Fragment {
 
 
 
-        CandidateDBHelper helper = new CandidateDBHelper(getContext());
+        CandidateDBHelper helper = CandidateDBHelper.getInstance(getContext());
         SQLiteDatabase db=helper.getReadableDatabase();
         String sql = "SELECT COUNT(*) AS COUNT FROM "+CandidateContract.CandidateEntry.TABLE_NAME
                 +" WHERE party ='"+ partyName
@@ -161,7 +161,7 @@ public class PartyDetailFragment extends Fragment {
             proportionalListButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    CandidateDBHelper helper = new CandidateDBHelper(getContext());
+                    CandidateDBHelper helper = CandidateDBHelper.getInstance(getContext());
                     SQLiteDatabase db=helper.getReadableDatabase();
                     String sql = "SELECT * FROM "+CandidateContract.CandidateEntry.TABLE_NAME
                             +" WHERE party ='"+ partyName
