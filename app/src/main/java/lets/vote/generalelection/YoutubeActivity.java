@@ -12,7 +12,6 @@ public class YoutubeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("test", "onCreate");
         setContentView(R.layout.activity_youtube);
     }
 }

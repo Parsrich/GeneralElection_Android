@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -128,23 +129,23 @@ public class SearchCandidateListFragment extends Fragment {
             holder.address.setText(vo.address);
             Glide.with(holder.itemView.getContext()).load(vo.imageUrl).into(holder.candidateImage);
 
+            if(vo.status.equals("resign")){
+                holder.resignLayout.setVisibility(View.VISIBLE);
+            }else {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(v != null){
+                            Fragment detailFragment =  new CandidateDetailFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("vo",vo);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(v != null){
-                        Fragment detailFragment =  new CandidateDetailFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("vo",vo);
-
-
-                        detailFragment.setArguments(bundle);
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,detailFragment).addToBackStack(null).commit();
-
-
+                            detailFragment.setArguments(bundle);
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,detailFragment).addToBackStack(null).commit();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         @Override
@@ -177,6 +178,9 @@ public class SearchCandidateListFragment extends Fragment {
 
         public TextView searchDistrict;
 
+        public ConstraintLayout resignLayout;
+
+
         public CandidateViewHolder(View view){
             super(view);
             name = view.findViewById(R.id.name);
@@ -187,6 +191,7 @@ public class SearchCandidateListFragment extends Fragment {
             address = view.findViewById(R.id.address);
             candidateImage = view.findViewById(R.id.candidateImage);
             searchDistrict = view.findViewById(R.id.searchDistrict);
+            resignLayout = view.findViewById(R.id.resign);
         }
     }
 

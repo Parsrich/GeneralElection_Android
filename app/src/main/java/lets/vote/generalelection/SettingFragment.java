@@ -48,7 +48,7 @@ public class SettingFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.settingRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<String> settingList = new ArrayList<>();
-        settingList.add("후원하기");
+        settingList.add("공지사항");
         settingList.add("문의하기");
         settingList.add("오픈소스 라이선스");
         settingList.add("앱 버전: 1.0.0");
@@ -84,8 +84,8 @@ public class SettingFragment extends Fragment {
                     public void onClick(View v) {
                         switch (position) {
                             case 0:
-                                // 후원하기 페이지
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.defaultSettingContainer,DonationFragment.getInstance()).addToBackStack("setting").commit();
+                                // 공지사항 페이지
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.defaultSettingContainer,NoticeFragment.getInstance()).addToBackStack("setting").commit();
                                 break;
                             case 1:
                                 // 오류 문의

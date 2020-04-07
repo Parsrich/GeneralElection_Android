@@ -1,6 +1,7 @@
 package lets.vote.generalelection;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -8,8 +9,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -102,113 +105,123 @@ public class CandidateListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        nowElection = 0;
-        stack =  (Stack<String>)getArguments().get("stack");
-
-        //해당지역의 선거 종류 Map
-        Map<String, Object> electionMap = (Map<String, Object>) getArguments().get("districtMap");
-        for(int i = 0; i < stack.size() ; i++) {
-            electionMap = (Map<String, Object>) electionMap.get(stack.get(i));
-        }
-
-        //대상선거 리스트에 담기
-        List<String> selectList = new ArrayList<>();
-        for(String k : electionMap.keySet()){
-            if (!electionMap.get(k).equals("")){
-                selectList.add(Election.valueOf(k).getName());
-            }
-        }
-
         View rootView = inflater.inflate(R.layout.fragment_candidate_list, container, false);
-        progressBar = rootView.findViewById(R.id.districtProgress);
-        noListLayout = rootView.findViewById(R.id.noList);
-        TextView searchDistrict = rootView.findViewById(R.id.searchDistrict);
-        Log.d("test", "현재 지역구 " + Election.values()[0].toString());
-        progressBar.setVisibility(View.VISIBLE);
+        NetworkChecker.setup(getContext());
+        if (!NetworkChecker.checkOn()){
+            NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+            }).show();
+        }else {
 
-        // 현재 지역구
-        searchDistrict.setText(stack.get(0)+" "+electionMap.get(Election.values()[nowElection].toString()).toString());
+            nowElection = 0;
+            stack = (Stack<String>) getArguments().get("stack");
 
-        /* 선거 선택 */
-        Spinner spinner = rootView.findViewById(R.id.electionSpinner);
-        final ArrayAdapter<String> selectAdapter
-                = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item,selectList) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-
-                Typeface externalFont = ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
-
-                ((TextView) view).setTypeface(externalFont);
-                ((TextView) view).setTextSize(17);
-                return view;
+            //해당지역의 선거 종류 Map
+            Map<String, Object> electionMap = (Map<String, Object>) getArguments().get("districtMap");
+            for (int i = 0; i < stack.size(); i++) {
+                electionMap = (Map<String, Object>) electionMap.get(stack.get(i));
             }
 
-            @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-
-                Typeface externalFont = ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
-
-                ((TextView) view).setTypeface(externalFont);
-                ((TextView) view).setTextSize(17);
-                return view;
-            }
-        };
-
-        selectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(selectAdapter);
-        spinner.setSelection(nowElection);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (view != null) {
-                    nowElection = position;
-
-                    candidateList.clear();
-                    candidateAdapter.notifyDataSetChanged();
-                    String path = Election.values()[nowElection].toString()+"/"+stack.get(0)+"_"+getDistrictList(stack).get(0);
-
-                    FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(candidateListener);
+            //대상선거 리스트에 담기
+            List<String> selectList = new ArrayList<>();
+            for (String k : electionMap.keySet()) {
+                if (!electionMap.get(k).equals("")) {
+                    selectList.add(Election.valueOf(k).getName());
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                nowElection = 0;
-            }
-        });
 
+            progressBar = rootView.findViewById(R.id.districtProgress);
+            noListLayout = rootView.findViewById(R.id.noList);
+            TextView searchDistrict = rootView.findViewById(R.id.searchDistrict);
+            progressBar.setVisibility(View.VISIBLE);
 
-        /* 데이터 */
+            // 현재 지역구
+            searchDistrict.setText(stack.get(0) + " " + electionMap.get(Election.values()[nowElection].toString()).toString());
 
-        recyclerView = rootView.findViewById(R.id.candidateList);
+            /* 선거 선택 */
+            Spinner spinner = rootView.findViewById(R.id.electionSpinner);
+            final ArrayAdapter<String> selectAdapter
+                    = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, selectList) {
+                @NonNull
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
 
-        /* 후보자 Adapter */
-        candidateList = new ArrayList<>();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        candidateAdapter = new CandidateAdapter(candidateList);
+                    Typeface externalFont = ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
 
-        /* 마지막 값인지 확인 */
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int lastPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-                Log.d("position", lastPosition + "");
-                if (lastPosition == candidateList.size() - 1) {
-                    Log.d("position", "마지막 값");
+                    ((TextView) view).setTypeface(externalFont);
+                    ((TextView) view).setTextSize(17);
+                    return view;
                 }
-            }
-        });
 
-        recyclerView.setAdapter(candidateAdapter);
+                @Override
+                public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    View view = super.getDropDownView(position, convertView, parent);
+
+                    Typeface externalFont = ResourcesCompat.getFont(mContext, R.font.gmarket_sans_medium);
+
+                    ((TextView) view).setTypeface(externalFont);
+                    ((TextView) view).setTextSize(17);
+                    return view;
+                }
+            };
+
+            selectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(selectAdapter);
+            spinner.setSelection(nowElection);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (view != null) {
+                        nowElection = position;
+
+                        candidateList.clear();
+                        candidateAdapter.notifyDataSetChanged();
+                        String path = Election.values()[nowElection].toString() + "/" + stack.get(0) + "_" + getDistrictList(stack).get(0);
+
+                        FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(candidateListener);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    nowElection = 0;
+                }
+            });
 
 
-        String path = Election.values()[nowElection].toString()+"/"+stack.get(0)+"_"+getDistrictList(stack).get(0);
-        FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(candidateListener);
+            /* 데이터 */
 
+            recyclerView = rootView.findViewById(R.id.candidateList);
+
+            /* 후보자 Adapter */
+            candidateList = new ArrayList<>();
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            candidateAdapter = new CandidateAdapter(candidateList);
+
+            /* 마지막 값인지 확인 */
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int lastPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                    Log.d("position", lastPosition + "");
+                    if (lastPosition == candidateList.size() - 1) {
+                        Log.d("position", "마지막 값");
+                    }
+                }
+            });
+
+            recyclerView.setAdapter(candidateAdapter);
+
+
+            String path = Election.values()[nowElection].toString() + "/" + stack.get(0) + "_" + getDistrictList(stack).get(0);
+            FirebaseDistrictManager.getDbRef(path).addListenerForSingleValueEvent(candidateListener);
+        }
         return rootView;
     }
 
@@ -265,23 +278,26 @@ public class CandidateListFragment extends Fragment {
             holder.address.setText(vo.address);
             Glide.with(holder.itemView.getContext()).load(vo.imageUrl).into(holder.candidateImage);
 
+            if(vo.status.equals("resign")){
+                holder.resignLayout.setVisibility(View.VISIBLE);
+            }else {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(v != null){
+                            Fragment detailFragment =  new CandidateDetailFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("vo",vo);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(v != null){
-                        Fragment detailFragment =  new CandidateDetailFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("vo",vo);
-
-
-                        detailFragment.setArguments(bundle);
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,detailFragment).addToBackStack(null).commit();
-
-
+                            detailFragment.setArguments(bundle);
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,detailFragment).addToBackStack(null).commit();
+                        }
                     }
-                }
-            });
+                });
+            }
+
+
+
         }
 
         @Override
@@ -336,6 +352,8 @@ public class CandidateListFragment extends Fragment {
 
         public TextView searchDistrict;
 
+        public ConstraintLayout resignLayout;
+
         public CandidateViewHolder(View view){
             super(view);
             name = view.findViewById(R.id.name);
@@ -346,6 +364,7 @@ public class CandidateListFragment extends Fragment {
             address = view.findViewById(R.id.address);
             candidateImage = view.findViewById(R.id.candidateImage);
             searchDistrict = view.findViewById(R.id.searchDistrict);
+            resignLayout = view.findViewById(R.id.resign);
         }
     }
 

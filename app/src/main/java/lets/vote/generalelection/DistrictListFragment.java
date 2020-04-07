@@ -1,10 +1,13 @@
 package lets.vote.generalelection;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +38,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -154,25 +158,42 @@ public class DistrictListFragment extends Fragment {
 
         recyclerView.setAdapter(districtAdapter);
 
+
+
+        NetworkChecker.setup(getContext());
+        if (NetworkChecker.checkOn()){
+            Log.d("test", "### 연결 " );
+
+
+
+
         /* 데이터 가져오기 */
         if (districtMap == null || districtMap.size() == 0 ){
+            progressBar.setVisibility(View.VISIBLE);
+
+            FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
+                @Override
+                public void onChanged(Map<String, Object> resultMap) {
+                    districtMap = resultMap;
+                    districtList.clear();
+                    districtList.addAll(getDistrictList(districtHistoryStack));
+                    districtAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
             progressBar.setVisibility(View.VISIBLE);
             FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
                 @Override
                 public void onChanged(Map<String, Object> resultMap) {
-                    Log.d("test","resultMap.toString() "+resultMap.toString());
-                    Log.d("test","districtHistoryStack "+districtHistoryStack.toString());
                     districtMap = resultMap;
                     districtList.clear();
                     districtList.addAll(getDistrictList(districtHistoryStack));
-                    Log.d("test",districtList.toString());
                     districtAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);
                 }
             });
         } else {
             districtList.addAll(getDistrictList(districtHistoryStack));
-            Log.d("test", districtList.toString());
             districtAdapter.notifyDataSetChanged();
 
             if(districtHistoryStack.size()>0){
@@ -207,7 +228,14 @@ public class DistrictListFragment extends Fragment {
                 navGuText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
             }
         }
-
+        }else {
+            NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+            }).show();
+        }
         return rootView;
     }
 
@@ -219,17 +247,13 @@ public class DistrictListFragment extends Fragment {
 
             for(int i = 0; i < history.size() ; i++) {
                 temp = (Map<String, Object>) temp.get(history.get(i));
-                Log.d("test","getDistrictList 도는중  : "+temp.toString());
             }
-            Log.d("test","getDistrictList 도는중  : "+temp.toString());
             if (history.size() == 3) {
                 resultList =  new ArrayList<>();
                 resultList.add((String)temp.get(Election.values()[nowElection].toString()));
             }else {
                 resultList =  new ArrayList<>(temp.keySet());
             }
-
-            Log.d("test","getDistrictList 결과  : "+resultList.toString());
         }
         Collections.sort(resultList);
 
@@ -269,8 +293,6 @@ public class DistrictListFragment extends Fragment {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("test","클릭했을 때 지역이름리스트 ,"+districtList.toString());
-                    Log.d("test","클릭했을 때 스택  ,"+districtHistoryStack.toString());
                     if(v != null){
 
                         districtList.clear();
@@ -321,9 +343,6 @@ public class DistrictListFragment extends Fragment {
                             districtAdapter.notifyDataSetChanged();
                         }
                     }
-
-                    Log.d("test","클릭후 최종 지역이름리스트 ,"+districtList.toString());
-                    Log.d("test","클릭후 최종 스택  ,"+districtHistoryStack.toString());
                 }
             });
 

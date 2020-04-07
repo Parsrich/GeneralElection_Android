@@ -147,7 +147,6 @@ public class PartyDetailFragment extends Fragment {
                 +"' AND recommend is NOT NULL";
         Cursor cursor=db.rawQuery(sql,null);
         cursor.moveToNext();
-        Log.d("test", "cursor: " +cursor.getString(0));
 
         if (cursor.getString(0).equals("0")){
             proportionalListButton.setOnClickListener(new View.OnClickListener(){
@@ -170,7 +169,6 @@ public class PartyDetailFragment extends Fragment {
                     Fragment proportionalListFragment = ProportionalListFragment.getInstance();
                     Bundle bundle = new Bundle();
 
-                    Log.d("test", "onClick: " + cursor.getCount());
 
                     if(cursor.getCount() > 0){
                         List<CandidateVO> voList = new ArrayList<>();

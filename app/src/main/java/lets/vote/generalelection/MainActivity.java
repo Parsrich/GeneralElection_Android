@@ -1,5 +1,8 @@
 package lets.vote.generalelection;
 
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         viewPager = findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter =
                 new ViewPagerAdapter(getSupportFragmentManager(),
@@ -91,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                Log.d("test", "onTabReselected: ");
                 if(tab.getPosition() == 1) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);

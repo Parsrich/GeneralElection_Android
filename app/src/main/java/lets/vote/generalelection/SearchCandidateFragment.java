@@ -86,7 +86,6 @@ public class SearchCandidateFragment extends Fragment {
                     }else {
                         String sql = "SELECT * FROM "+CandidateContract.CandidateEntry.TABLE_NAME+ " WHERE name like '%"+v.getText().toString().trim() +"%'";
                         Cursor cursor = db.rawQuery(sql,null);
-                        Log.d("test", cursor.getCount()+" ");
 
                         if (cursor.getCount() == 0){
                             Toast.makeText(getContext(),getResources().getString(R.string.no_result),Toast.LENGTH_SHORT).show();
@@ -108,7 +107,6 @@ public class SearchCandidateFragment extends Fragment {
                             Fragment searchCandidateListFragment = SearchCandidateListFragment.getInstance();
                             Bundle bundle = new Bundle();
                             List<CandidateVO> voList = new ArrayList<>();
-                            Toast.makeText(getContext(),"여러개",Toast.LENGTH_SHORT).show();
                             while (cursor.moveToNext()){
                                 voList.add(new CandidateVO(cursor));
                             }
