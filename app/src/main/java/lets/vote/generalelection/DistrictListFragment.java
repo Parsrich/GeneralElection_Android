@@ -1,27 +1,15 @@
 package lets.vote.generalelection;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,9 +19,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Group;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * A simple {@link Fragment} subclass.
  */
 public class DistrictListFragment extends Fragment {
+    static ConnectivityManager.NetworkCallback mCallback;
     private static DistrictListFragment instance;
     private RecyclerView recyclerView;
     private DistrictAdapter districtAdapter;
@@ -157,7 +143,8 @@ public class DistrictListFragment extends Fragment {
         /* 데이터 가져오기 */
         if (districtMap == null || districtMap.size() == 0 ){
             progressBar.setVisibility(View.VISIBLE);
-            FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
+
+            FirebaseDistrictManager.getDistrictMap().observe(DistrictListFragment.this, new Observer<Map<String,Object>>() {
                 @Override
                 public void onChanged(Map<String, Object> resultMap) {
                     Log.d("test","resultMap.toString() "+resultMap.toString());
@@ -170,6 +157,7 @@ public class DistrictListFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 }
             });
+
         } else {
             districtList.addAll(getDistrictList(districtHistoryStack));
             Log.d("test", districtList.toString());
@@ -210,6 +198,42 @@ public class DistrictListFragment extends Fragment {
 
         return rootView;
     }
+
+//    public void callDataFromFirebase(){
+//
+//        FirebaseDistrictManager.getDistrictMap(getActivity(), new NetworkCheck() {
+//            @Override
+//            public void successHandler() {
+//            }
+//
+//            @Override
+//            public void failureHandler() {
+//
+//                // 확인
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//                builder.setTitle("네트워크 에러").setMessage("네트워크를 확인해주세요.");
+//                builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        callDataFromFirebase();
+//                    }
+//                });
+//            }
+//        }).observe(DistrictListFragment.this, new Observer<Map<String,Object>>() {
+//            @Override
+//            public void onChanged(Map<String, Object> resultMap) {
+//                Log.d("test","resultMap.toString() "+resultMap.toString());
+//                Log.d("test","districtHistoryStack "+districtHistoryStack.toString());
+//                districtMap = resultMap;
+//                districtList.clear();
+//                districtList.addAll(getDistrictList(districtHistoryStack));
+//                Log.d("test",districtList.toString());
+//                districtAdapter.notifyDataSetChanged();
+//                progressBar.setVisibility(View.GONE);
+//            }
+//        });
+//    }
 
     public List<String> getDistrictList( Stack<String> history){
         List<String> resultList = new ArrayList<>();
