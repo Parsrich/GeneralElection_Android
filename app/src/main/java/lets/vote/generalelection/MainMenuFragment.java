@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
@@ -44,10 +45,10 @@ public class MainMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_main_menu, container, false);
 
-        ImageView guideBtn = rootView.findViewById(R.id.mainGuideBtn);
-        ImageView partyBtn = rootView.findViewById(R.id.mainPartyBtn);
-        ImageView districtBtn = rootView.findViewById(R.id.mainDistrictBtn);
-        ImageView candidateBtn = rootView.findViewById(R.id.mainCandidateBtn);
+        ConstraintLayout guideBtn = rootView.findViewById(R.id.mainGuideBtn);
+        ConstraintLayout partyBtn = rootView.findViewById(R.id.mainPartyBtn);
+        ConstraintLayout districtBtn = rootView.findViewById(R.id.mainDistrictBtn);
+        ConstraintLayout candidateBtn = rootView.findViewById(R.id.mainCandidateBtn);
         final Fragment districtFragment = DistrictListFragment.getInstance();
         districtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
