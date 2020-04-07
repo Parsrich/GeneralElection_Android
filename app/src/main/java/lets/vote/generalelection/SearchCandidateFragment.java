@@ -3,6 +3,8 @@ package lets.vote.generalelection;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,11 +24,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.ads.nativetemplates.NativeTemplateStyle;
+import com.google.android.ads.nativetemplates.TemplateView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import lets.vote.generalelection.admob.CandidateListAdManager;
 
 
 /**
@@ -67,6 +77,29 @@ public class SearchCandidateFragment extends Fragment {
 
     }
 
+    public void callAd(View view) {
+        CandidateListAdManager.getInstance().initialize(getContext(), new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+            @Override
+            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+                ColorDrawable white = new ColorDrawable(Color.WHITE);
+                NativeTemplateStyle styles = new
+                        NativeTemplateStyle.Builder().withMainBackgroundColor(white).build();
+
+                TemplateView template = view.findViewById(R.id.adView);
+                template.setStyles(styles);
+                template.setNativeAd(unifiedNativeAd);
+
+            }
+        }, new AdListener() {
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Handle the failure by logging, altering the UI, and so on.
+            }
+        }, new NativeAdOptions.Builder().build());
+
+        CandidateListAdManager.getInstance().showAd();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,6 +107,8 @@ public class SearchCandidateFragment extends Fragment {
 
         View rootView =inflater.inflate(R.layout.fragment_search_candidate, container, false);
         final AutoCompleteTextView candidateSearchTextView = rootView.findViewById(R.id.searchCandidate);
+
+        callAd(rootView);
 
         ArrayAdapter<String> autoAdapter = new ArrayAdapter<>(mContext,android.R.layout.simple_dropdown_item_1line, nameList);
         candidateSearchTextView.setAdapter(autoAdapter);

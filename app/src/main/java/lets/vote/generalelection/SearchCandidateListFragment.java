@@ -2,6 +2,7 @@ package lets.vote.generalelection;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.ads.nativetemplates.NativeTemplateStyle;
+import com.google.android.ads.nativetemplates.TemplateView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +26,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import lets.vote.generalelection.admob.CandidateListAdManager;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SearchCandidateListFragment extends Fragment {
+
+    private final int AD_POSITION = 2;
     private static SearchCandidateListFragment instance;
     private RecyclerView recyclerView;
     private List<CandidateVO> searchCandidateList ;
@@ -70,6 +80,10 @@ public class SearchCandidateListFragment extends Fragment {
         recyclerView.setAdapter(searchCandidateAdapter);
         searchCandidateAdapter.notifyDataSetChanged();
 
+        if (searchCandidateList.size() > AD_POSITION) {
+            searchCandidateList.add(AD_POSITION, new CandidateVO());
+        }
+
         return rootView;
     }
 
@@ -83,7 +97,33 @@ public class SearchCandidateListFragment extends Fragment {
         recyclerView = null;
     }
 
-    private class CandidateAdapter extends RecyclerView.Adapter<CandidateViewHolder> {
+    public void callAd(View view) {
+        CandidateListAdManager.getInstance().initialize(getContext(), new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+            @Override
+            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+                ColorDrawable white = new ColorDrawable(Color.WHITE);
+                NativeTemplateStyle styles = new
+                        NativeTemplateStyle.Builder().withMainBackgroundColor(white).build();
+
+                TemplateView template = view.findViewById(R.id.adView);
+                template.setStyles(styles);
+                template.setNativeAd(unifiedNativeAd);
+
+            }
+        }, new AdListener() {
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Handle the failure by logging, altering the UI, and so on.
+            }
+        }, new NativeAdOptions.Builder().build());
+
+        CandidateListAdManager.getInstance().showAd();
+    }
+
+    private class CandidateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private final int VIEW_HEADER = 0;
+        private final int VIEW_ITEM = 1;
+
         List<CandidateVO> mList;
         public CandidateAdapter(List<CandidateVO> list){
             mList = list;
@@ -91,16 +131,36 @@ public class SearchCandidateListFragment extends Fragment {
 
         @NonNull
         @Override
-        public CandidateViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_candidate,viewGroup,false);
-            return new CandidateViewHolder(view);
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+            RecyclerView.ViewHolder holder;
+
+            if (viewType == VIEW_HEADER) {
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_candidate_ad,viewGroup,false);
+                holder = new HeaderViewHolder(view);
+            } else {
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_candidate,viewGroup,false);
+                holder = new CandidateViewHolder(view);
+            }
+
+            return holder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CandidateViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            if (position == AD_POSITION) {
+                HeaderViewHolder viewHolder = (HeaderViewHolder) holder;
+
+                // 광고 초기화
+                callAd(viewHolder.itemView);
+
+                return;
+            }
+
+            CandidateViewHolder viewHolder = (CandidateViewHolder) holder;
+
             final CandidateVO vo = mList.get(position);
 
-            holder.party.setText(vo.party);
+            viewHolder.party.setText(vo.party);
             String color = PartyInfo.getPartyColor(vo.party);
             GradientDrawable drawable = (GradientDrawable) getResources().getDrawable(R.drawable.round_corner);
             GradientDrawable numberDrawable = (GradientDrawable) getResources().getDrawable(R.drawable.number_round_corner);
@@ -112,24 +172,24 @@ public class SearchCandidateListFragment extends Fragment {
                 drawable.setColor(Color.parseColor(PartyInfo.getPartyColor("기본값")));
                 numberDrawable.setColor(Color.parseColor(PartyInfo.getPartyColor("기본값")));
             }
-            holder.party.setBackground(drawable);
-            holder.number.setBackground(numberDrawable);
+            viewHolder.party.setBackground(drawable);
+            viewHolder.number.setBackground(numberDrawable);
             String numberText = "기호"+vo.number;
             if(vo.getSi() == null){
                 numberText = "번호"+vo.getRecommend();
             }
 
-            holder.number.setText(numberText);
-            holder.itemView.setTag(vo);
-            holder.name.setText(vo.name);
-            holder.birth.setText(vo.birth);
+            viewHolder.number.setText(numberText);
+            viewHolder.itemView.setTag(vo);
+            viewHolder.name.setText(vo.name);
+            viewHolder.birth.setText(vo.birth);
             String genderText = "/"+vo.gender;
-            holder.gender.setText(genderText);
-            holder.address.setText(vo.address);
-            Glide.with(holder.itemView.getContext()).load(vo.imageUrl).into(holder.candidateImage);
+            viewHolder.gender.setText(genderText);
+            viewHolder.address.setText(vo.address);
+            Glide.with(viewHolder.itemView.getContext()).load(vo.imageUrl).into(viewHolder.candidateImage);
 
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(v != null){
@@ -150,6 +210,14 @@ public class SearchCandidateListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mList.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position == AD_POSITION)
+                return VIEW_HEADER;
+            else
+                return VIEW_ITEM;
         }
     }
 
@@ -190,4 +258,10 @@ public class SearchCandidateListFragment extends Fragment {
         }
     }
 
+    class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        public HeaderViewHolder(View view) {
+            super(view);
+        }
+    }
 }

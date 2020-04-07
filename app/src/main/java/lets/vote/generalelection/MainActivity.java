@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, initializationStatus -> {
             Log.d("MainActivity", "광고 준비");
         });
-        
+
         viewPager = findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter =
                 new ViewPagerAdapter(getSupportFragmentManager(),
