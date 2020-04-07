@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+
+import lets.vote.generalelection.admob.FullScreenAdManager;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,9 +52,49 @@ public class MainMenuFragment extends Fragment {
         ImageView districtBtn = rootView.findViewById(R.id.mainDistrictBtn);
         ImageView candidateBtn = rootView.findViewById(R.id.mainCandidateBtn);
         final Fragment districtFragment = DistrictListFragment.getInstance();
+
+        FullScreenAdManager adInstance = FullScreenAdManager.getInstance(getContext());
+        adInstance.initialize(getContext(), new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+            }
+        });
+
         districtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adInstance.showAd(getContext());
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,districtFragment).addToBackStack(null).commit();
             }
         });
@@ -60,6 +104,7 @@ public class MainMenuFragment extends Fragment {
         partyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adInstance.showAd(getContext());
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,partyListFragment).addToBackStack(null).commit();
             }
         });
@@ -68,6 +113,7 @@ public class MainMenuFragment extends Fragment {
         candidateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adInstance.showAd(getContext());
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,searchCandidateFragment).addToBackStack(null).commit();
             }
         });

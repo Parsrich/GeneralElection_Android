@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        MobileAds.initialize(this, initializationStatus -> {
+            Log.d("MainActivity", "광고 준비");
+        });
 
         if (candidateNameMap == null || candidateNameMap.size() == 0) {
             FirebaseDistrictManager.getCandidateNameMap().observe(this, new Observer<Map<String, Object>>() {
