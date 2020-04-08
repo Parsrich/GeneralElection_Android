@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -32,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MobileAds.initialize(this, initializationStatus -> {
+            Log.d("MainActivity", "광고 준비");
+        });
+
         viewPager = findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter =
                 new ViewPagerAdapter(getSupportFragmentManager(),
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(GuideFragment.getInstance());
         viewPagerAdapter.addFragment(MainFragment.getInstance());
         viewPagerAdapter.addFragment(DefaultSettingFragment.getInstance());
-
+        
         viewPager.setAdapter(viewPagerAdapter);
 
         TabLayout tabs = findViewById(R.id.tabs);

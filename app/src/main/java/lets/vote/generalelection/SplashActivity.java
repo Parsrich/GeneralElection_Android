@@ -1,7 +1,9 @@
 package lets.vote.generalelection;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.lifecycle.Observer;
 
 import android.content.ContentValues;
@@ -10,7 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -21,7 +23,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.List;
 import java.util.Map;
-
 
 public class SplashActivity extends AppCompatActivity {
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
@@ -122,6 +123,15 @@ public class SplashActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
                     @Override
                     public void onComplete(@NonNull Task<Boolean> task) {
+
+
+
+                        boolean isUpToDated = checkApplicationVersion();
+                        if (!isUpToDated) {
+                            Log.d("test", "앱 최신아님 :" + mFirebaseRemoteConfig.getString("android_app_version"));
+                            return;
+                        }
+
                         Log.d("test", "android_db_version: " +mFirebaseRemoteConfig.getString("android_db_version"));
                         int getVersion = 1;
                         if (!mFirebaseRemoteConfig.getString("android_db_version").equals("")){
@@ -151,6 +161,36 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    public boolean checkApplicationVersion() {
+        String appVersion = mFirebaseRemoteConfig.getString("android_app_version");
+        if (!BuildConfig.VERSION_NAME.equals(appVersion) ) {
+            // 확인
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashActivity.this, R.style.DialogStyle));
+
+            builder.setTitle("앱이 업데이트 되었습니다.")
+                    .setMessage("업데이트를 위해 Play Store로 이동합니다.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                            } catch (android.content.ActivityNotFoundException anfe) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                            }
+                        }
+                    }).setNegativeButton("종료", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            finish();
+                        }
+                    }).show();
+        }
+        return BuildConfig.VERSION_NAME.equals(appVersion);
     }
 
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
@@ -92,7 +93,12 @@ public class PartyListFragment extends Fragment {
             final PartyVO vo = mList.get(position);
             holder.partyName.setText(vo.getName());
 
-            Glide.with(holder.itemView.getContext()).load(vo.getUrl()).into(holder.partyImage);
+            int drawableId = getResources().getIdentifier( "party"+vo.getNumber(), "drawable", getContext().getPackageName());
+
+            Glide
+                    .with(holder.itemView.getContext())
+                    .load(drawableId)
+                    .into(holder.partyImage);
 
             if(vo.getName().equals("가자!평화인권당")){
                 holder.partyImage.setBackgroundColor(Color.parseColor("#65A032"));
@@ -104,7 +110,8 @@ public class PartyListFragment extends Fragment {
                 public void onClick(View v) {
                     Fragment partyDetailFragment = PartyDetailFragment.getInstance();
                     Bundle bundle = new Bundle();
-                    bundle.putString("partName",vo.getName());
+                    bundle.putString("partName", vo.getName());
+                    bundle.putInt("partyNumber", vo.getNumber());
                     partyDetailFragment.setArguments(bundle);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,partyDetailFragment).addToBackStack(null).commit();
                 }

@@ -127,8 +127,15 @@ public class PartyDetailFragment extends Fragment {
         final String partyName = getArguments().getString("partName");
         Integer proportional = PartyInfo.getProportionalMap().get(partyName);
 
-        String url = PartyInfo.getPartyLogoMap().get(partyName);
-        Glide.with(getContext()).load(url).into(partyLogo);
+        final int partyNumber = getArguments().getInt("partyNumber");
+
+        int drawableId = getResources().getIdentifier( "party"+partyNumber, "drawable", getContext().getPackageName());
+
+        Glide
+                .with(getContext())
+                .load(drawableId)
+                .into(partyLogo);
+
 
         partyDetailName.setText(partyName);
         promiseTitle.setText((partyName+" 공약"));

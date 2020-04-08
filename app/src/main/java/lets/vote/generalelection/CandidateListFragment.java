@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
@@ -29,6 +30,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.ads.nativetemplates.NativeTemplateStyle;
+import com.google.android.ads.nativetemplates.TemplateView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -39,11 +46,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import lets.vote.generalelection.admob.CandidateListAdManager;
+
+import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CandidateListFragment extends Fragment {
+
+    private final int AD_POSITION = 2;
+
     private static CandidateListFragment instance;
     private RecyclerView recyclerView;
     private List<CandidateVO> candidateList ;
@@ -65,6 +79,7 @@ public class CandidateListFragment extends Fragment {
             ArrayList<Object> value = (ArrayList<Object>) dataSnapshot.getValue();
             candidateList.clear();
             for( Object candidate :value){
+
                 candidateList.add(new CandidateVO((Map<String,Object>)candidate));
             }
             Collections.sort(candidateList);
@@ -72,6 +87,10 @@ public class CandidateListFragment extends Fragment {
             candidateAdapter.notifyDataSetChanged();
             if(candidateList.size() == 0){
                 noListLayout.setVisibility(View.VISIBLE);
+            }
+
+            if (candidateList.size() > AD_POSITION) {
+                candidateList.add(AD_POSITION, new CandidateVO());
             }
         }
         @Override
@@ -237,7 +256,33 @@ public class CandidateListFragment extends Fragment {
         recyclerView = null;
     }
 
-    private class CandidateAdapter extends RecyclerView.Adapter<CandidateViewHolder> {
+    public void callAd(View view) {
+        CandidateListAdManager.getInstance().initialize(getContext(), new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+            @Override
+            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+                ColorDrawable white = new ColorDrawable(Color.WHITE);
+                NativeTemplateStyle styles = new
+                        NativeTemplateStyle.Builder().withMainBackgroundColor(white).build();
+
+                TemplateView template = view.findViewById(R.id.adView);
+                template.setStyles(styles);
+                template.setNativeAd(unifiedNativeAd);
+
+            }
+        }, new AdListener() {
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Handle the failure by logging, altering the UI, and so on.
+            }
+        }, new NativeAdOptions.Builder().build());
+
+        CandidateListAdManager.getInstance().showAd();
+    }
+
+    private class CandidateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private final int VIEW_HEADER = 0;
+        private final int VIEW_ITEM = 1;
+
         List<CandidateVO> mList;
         public CandidateAdapter(List<CandidateVO> list){
             mList = list;
@@ -245,16 +290,37 @@ public class CandidateListFragment extends Fragment {
 
         @NonNull
         @Override
-        public CandidateViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_candidate,viewGroup,false);
-            return new CandidateViewHolder(view);
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+            RecyclerView.ViewHolder holder;
+
+            if (viewType == VIEW_HEADER) {
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_candidate_ad,viewGroup,false);
+                holder = new HeaderViewHolder(view);
+            } else {
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_candidate,viewGroup,false);
+                holder = new CandidateViewHolder(view);
+            }
+
+            return holder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CandidateViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+            if (position == AD_POSITION) {
+                HeaderViewHolder viewHolder = (HeaderViewHolder) holder;
+
+                // 광고 초기화
+                callAd(viewHolder.itemView);
+
+                return;
+            }
+
+            CandidateViewHolder viewHolder = (CandidateViewHolder) holder;
+
             final CandidateVO vo = mList.get(position);
 
-            holder.party.setText(vo.party);
+            viewHolder.party.setText(vo.party);
             String color = PartyInfo.getPartyColor(vo.party);
             GradientDrawable drawable = (GradientDrawable) getResources().getDrawable(R.drawable.round_corner);
             GradientDrawable numberDrawable = (GradientDrawable) getResources().getDrawable(R.drawable.number_round_corner);
@@ -266,22 +332,22 @@ public class CandidateListFragment extends Fragment {
                 drawable.setColor(Color.parseColor(PartyInfo.getPartyColor("기본값")));
                 numberDrawable.setColor(Color.parseColor(PartyInfo.getPartyColor("기본값")));
             }
-            holder.party.setBackground(drawable);
-            holder.number.setBackground(numberDrawable);
+            viewHolder.party.setBackground(drawable);
+            viewHolder.number.setBackground(numberDrawable);
             String numberText = "기호"+vo.number;
-            holder.number.setText(numberText);
-            holder.itemView.setTag(vo);
-            holder.name.setText(vo.name);
-            holder.birth.setText(vo.birth);
+            viewHolder.number.setText(numberText);
+            viewHolder.itemView.setTag(vo);
+            viewHolder.name.setText(vo.name);
+            viewHolder.birth.setText(vo.birth);
             String genderText = "/"+vo.gender;
-            holder.gender.setText(genderText);
-            holder.address.setText(vo.address);
-            Glide.with(holder.itemView.getContext()).load(vo.imageUrl).into(holder.candidateImage);
+            viewHolder.gender.setText(genderText);
+            viewHolder.address.setText(vo.address);
+            Glide.with(viewHolder.itemView.getContext()).load(vo.imageUrl).into(viewHolder.candidateImage);
 
             if(vo.status.equals("resign")){
-                holder.resignLayout.setVisibility(View.VISIBLE);
+                viewHolder.resignLayout.setVisibility(View.VISIBLE);
             }else {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(v != null){
@@ -295,17 +361,21 @@ public class CandidateListFragment extends Fragment {
                     }
                 });
             }
-
-
-
         }
 
         @Override
         public int getItemCount() {
             return mList.size();
         }
-    }
 
+        @Override
+        public int getItemViewType(int position) {
+            if (position == AD_POSITION)
+                return VIEW_HEADER;
+            else
+                return VIEW_ITEM;
+        }
+    }
 
     public List<String> getDistrictList( Stack<String> history){
         List<String> resultList = new ArrayList<>();
@@ -330,7 +400,7 @@ public class CandidateListFragment extends Fragment {
     }
 
 
-    private class CandidateViewHolder extends RecyclerView.ViewHolder{
+    private class CandidateViewHolder extends RecyclerView.ViewHolder {
         //        후보Id
         public TextView id;
         //        이름
@@ -368,4 +438,10 @@ public class CandidateListFragment extends Fragment {
         }
     }
 
+    class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        public HeaderViewHolder(View view) {
+            super(view);
+        }
+    }
 }

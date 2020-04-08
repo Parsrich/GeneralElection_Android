@@ -1,5 +1,7 @@
 package lets.vote.generalelection;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +38,7 @@ class FirebaseDistrictManager {
     }
 
     public static MutableLiveData<Map<String,Object>> getDistrictMap() {
+
         if (districtMutableLiveData == null ) {
             database = FirebaseDatabase.getInstance();
             districtMutableLiveData = new MutableLiveData<>();
@@ -50,9 +53,13 @@ class FirebaseDistrictManager {
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
+//                            databaseError.getCode()
+                            Log.d("onCancelled", "error detail: " + databaseError.getDetails());
+                            Log.d("onCancelled", "error msg: " + databaseError.getMessage());
                         }
                     });
         }
+
         return districtMutableLiveData;
     }
 
