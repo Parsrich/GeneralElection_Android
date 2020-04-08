@@ -97,7 +97,7 @@ public class CandidateDetailFragment extends Fragment {
         String districtText = "비례대표";
         String numberText = "번호"+candidateVO.getRecommend();
         if (candidateVO.getSi() !=null){
-            districtText = candidateVO.getSi() +">" + candidateVO.getDistrict();
+            districtText = candidateVO.getSi() +" > " + candidateVO.getDistrict();
             numberText = "기호"+candidateVO.getNumber();
         }
 

@@ -72,6 +72,7 @@
             android:layout_marginTop="15dp"
             app:layout_constraintLeft_toLeftOf="@id/number"
             app:layout_constraintTop_toBottomOf="@id/number"
+            android:textColor="@color/common_google_signin_btn_text_light_pressed"
             tools:text="이낙연"
             android:fontFamily="@font/gmarket_sans_bold"
             />

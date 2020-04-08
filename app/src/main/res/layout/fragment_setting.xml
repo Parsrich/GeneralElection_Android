@@ -33,7 +33,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/settingRecyclerView"/>
+            app:layout_constraintBottom_toTopOf="@id/settingRecyclerView"
+            app:layout_constraintVertical_weight="4"/>
 
         <View
             android:layout_width="0dp"
@@ -53,7 +54,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/blank"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:itemCount="4"
+            app:layout_constraintVertical_weight="6"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
