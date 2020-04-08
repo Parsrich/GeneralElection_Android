@@ -4,6 +4,7 @@
 <!--    공통-->
 
     <dimen name="too_small_padding">5dp</dimen>
+    <dimen name="basic_small_padding">10dp</dimen>
     <dimen name="small_padding">15dp</dimen>
     <dimen name="large_padding">30dp</dimen>
     <dimen name="medium_padding">20dp</dimen>
@@ -95,7 +96,7 @@
     <dimen name="notice_text_size">18sp</dimen>
 
     <!--    party-->
-    <dimen name="party_text_size">18sp</dimen>
+    <dimen name="party_text_size">16sp</dimen>
 
 <!--    setting-->
     <dimen name="setting_list_text_size">20sp</dimen>
