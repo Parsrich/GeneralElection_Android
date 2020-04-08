@@ -15,6 +15,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,12 +30,14 @@ import java.util.Map;
 public class SplashActivity extends AppCompatActivity {
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private static SharedPreferences sharedPreferences;
-
+    ProgressBar bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        bar = findViewById(R.id.splashLoadingProgress);
+        bar.setVisibility(View.VISIBLE);
 
         NetworkChecker.setup(this);
         if (NetworkChecker.checkOn()){
@@ -46,68 +51,6 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }).show();
         }
-//
-//        if (manager.getNetworkInfo(NetworkCapabilities.TRANSPORT_CELLULAR).isConnected()
-//                || manager.getNetworkInfo(NetworkCapabilities.TRANSPORT_WIFI).isConnected()){
-//
-//
-//
-//        }else {
-//            Log.d("test", "### 연결 안됨  " );
-//            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-//            alertDialog.setTitle("네트워크 에러").setMessage("네트워크를 확인해주세요.");
-//            alertDialog.setPositiveButton("ㅂㅇ", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    finish();
-//                }
-//            });
-//            alertDialog.show();
-//        }
-
-//        NetworkChecker.setup(this);
-//        NetworkChecker.checkOn(new ConnectivityManager.NetworkCallback(){
-//            @Override
-//            public void onAvailable(@NonNull Network network) {
-//                // 네트워크를 사용할 준비가 되었을 때
-//                Log.d("test", "### onAvailable: 연결  " );
-//                NetworkChecker.manager.unregisterNetworkCallback(this);
-//            }
-//
-//            @Override
-//            public void onLost(@NonNull Network network) {
-//                // 네트워크가 끊겼을 때
-//                NetworkChecker.alert(getApplicationContext(), "버튼", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Log.d("test", "버튼클릭 " );
-//                    }
-//                }).show();
-//                Log.d("test", "### onLost: 끊김 " );
-//            }
-//        });
-
-//
-//        NetworkRequest.Builder builder = new NetworkRequest.Builder();
-//        builder.addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR);
-//        builder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI);
-//
-//
-//        final ConnectivityManager.NetworkCallback callback = new ConnectivityManager.NetworkCallback(){
-//            @Override
-//            public void onAvailable(@NonNull Network network) {
-//                // 네트워크를 사용할 준비가 되었을 때
-//                Log.d("test", "### onAvailable: 연결  " );
-//                manager.unregisterNetworkCallback(this);
-//            }
-//
-//            @Override
-//            public void onLost(@NonNull Network network) {
-//                // 네트워크가 끊겼을 때
-//                Log.d("test", "### onLost: 끊김 " );
-//            }
-//        };
-//        manager.registerNetworkCallback(builder.build(), callback);
     }
 
     private void dataSetting(){
@@ -115,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
         sharedPreferences = getApplicationContext().getSharedPreferences("app", Context.MODE_PRIVATE);
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         final FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(0)
+                .setMinimumFetchIntervalInSeconds(BuildConfig.REMOTE_CONFIG_REQUEST_TIME)
                 .build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
 
@@ -123,8 +66,6 @@ public class SplashActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
                     @Override
                     public void onComplete(@NonNull Task<Boolean> task) {
-
-
 
                         boolean isUpToDated = checkApplicationVersion();
                         if (!isUpToDated) {
@@ -153,12 +94,13 @@ public class SplashActivity extends AppCompatActivity {
                             getData();
                             sharedPreferences.edit().putInt("dbVersion",getVersion).commit();
                             Log.d("test", "다름" );
-                        }else {
+                        } else {
+                            bar.setVisibility(View.GONE);
                             Log.d("test", "같음" );
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
                     }
                 });
     }
@@ -241,6 +183,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
 
                 db.close();
+                bar.setVisibility(View.GONE);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

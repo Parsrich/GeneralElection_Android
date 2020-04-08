@@ -40,7 +40,7 @@ public class GuideFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_guide, container, false);
         if (checkMode){
-           getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
         ImageView image = rootView.findViewById(R.id.youtubeImage);
         image.setOnClickListener(new View.OnClickListener() {

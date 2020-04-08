@@ -12,6 +12,7 @@ import androidx.core.view.inputmethod.EditorInfoCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -97,7 +98,7 @@ public class SearchCandidateFragment extends Fragment {
             }
         }, new NativeAdOptions.Builder().build());
 
-        CandidateListAdManager.getInstance().showAd();
+        new Handler().postDelayed(() -> CandidateListAdManager.getInstance().showAd(), 1000);
     }
 
     @Override

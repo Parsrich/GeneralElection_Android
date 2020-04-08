@@ -126,7 +126,7 @@
                     android:layout_height="0dp"
                     android:background="@drawable/color_button"
                     android:fontFamily="@font/gmarket_sans_bold"
-                    android:text="정당이슈보기"
+                    android:text="정당정보위키"
                     android:textSize="@dimen/candidate_detail_button_text_size"
                     android:textColor="@color/white"
                     android:layout_marginTop="@dimen/candidate_detail_default_margin"
