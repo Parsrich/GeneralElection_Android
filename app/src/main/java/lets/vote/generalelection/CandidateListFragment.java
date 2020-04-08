@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -257,18 +258,15 @@ public class CandidateListFragment extends Fragment {
     }
 
     public void callAd(View view) {
-        CandidateListAdManager.getInstance().initialize(getContext(), new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
-            @Override
-            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
-                ColorDrawable white = new ColorDrawable(Color.WHITE);
-                NativeTemplateStyle styles = new
-                        NativeTemplateStyle.Builder().withMainBackgroundColor(white).build();
+        CandidateListAdManager.getInstance().initialize(getContext(), unifiedNativeAd -> {
+            ColorDrawable white = new ColorDrawable(Color.WHITE);
+            NativeTemplateStyle styles = new
+                    NativeTemplateStyle.Builder().withMainBackgroundColor(white).build();
 
-                TemplateView template = view.findViewById(R.id.adView);
-                template.setStyles(styles);
-                template.setNativeAd(unifiedNativeAd);
+            TemplateView template = view.findViewById(R.id.adView);
+            template.setStyles(styles);
+            template.setNativeAd(unifiedNativeAd);
 
-            }
         }, new AdListener() {
             @Override
             public void onAdFailedToLoad(int errorCode) {
@@ -276,7 +274,7 @@ public class CandidateListFragment extends Fragment {
             }
         }, new NativeAdOptions.Builder().build());
 
-        CandidateListAdManager.getInstance().showAd();
+        new Handler().postDelayed(() -> CandidateListAdManager.getInstance().showAd(), 2000);
     }
 
     private class CandidateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -398,6 +396,8 @@ public class CandidateListFragment extends Fragment {
 
         return resultList;
     }
+
+
 
 
     private class CandidateViewHolder extends RecyclerView.ViewHolder {

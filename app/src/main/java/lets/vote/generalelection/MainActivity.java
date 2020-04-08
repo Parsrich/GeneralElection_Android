@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabs.getTabAt(1).select();
 
+
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        tabs.getTabAt(1).select();
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {

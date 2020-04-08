@@ -51,6 +51,10 @@ public class PromiseDetailFragment extends Fragment {
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                promiseDetailArea.setText("");
+                promiseDetailTitle.setText("");
+                promiseDetailText.setText("");
                 getFragmentManager().popBackStack();
             }
         });

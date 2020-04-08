@@ -34,8 +34,8 @@ public class NetworkChecker {
 
     static public AlertDialog.Builder alert(Context context, String buttonString, DialogInterface.OnClickListener listener){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle("네트워크 연결 문제").setMessage("Wifi / 셀룰러 연결을 확인해주세요.");
-        alertDialog.setNeutralButton(buttonString, listener);
+        alertDialog.setTitle("네트워크 접속 에러").setMessage("WiFi / LTE 연결을 확인해주세요.");
+        alertDialog.setPositiveButton(buttonString, listener);
         alertDialog.setCancelable(false);
         return alertDialog;
     }

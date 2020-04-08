@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,18 +100,15 @@ public class SearchCandidateListFragment extends Fragment {
     }
 
     public void callAd(View view) {
-        CandidateListAdManager.getInstance().initialize(getContext(), new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
-            @Override
-            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
-                ColorDrawable white = new ColorDrawable(Color.WHITE);
-                NativeTemplateStyle styles = new
-                        NativeTemplateStyle.Builder().withMainBackgroundColor(white).build();
+        CandidateListAdManager.getInstance().initialize(getContext(), unifiedNativeAd -> {
+            ColorDrawable white = new ColorDrawable(Color.WHITE);
+            NativeTemplateStyle styles = new
+                    NativeTemplateStyle.Builder().withMainBackgroundColor(white).build();
 
-                TemplateView template = view.findViewById(R.id.adView);
-                template.setStyles(styles);
-                template.setNativeAd(unifiedNativeAd);
+            TemplateView template = view.findViewById(R.id.adView);
+            template.setStyles(styles);
+            template.setNativeAd(unifiedNativeAd);
 
-            }
         }, new AdListener() {
             @Override
             public void onAdFailedToLoad(int errorCode) {
@@ -118,7 +116,8 @@ public class SearchCandidateListFragment extends Fragment {
             }
         }, new NativeAdOptions.Builder().build());
 
-        CandidateListAdManager.getInstance().showAd();
+
+        new Handler().postDelayed(() -> CandidateListAdManager.getInstance().showAd(), 2000);
     }
 
     private class CandidateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

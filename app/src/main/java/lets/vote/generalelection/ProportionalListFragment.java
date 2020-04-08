@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +104,7 @@ public class ProportionalListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
 
+        recyclerView.scrollToPosition(0);
         candidateList.clear();
         candidateAdapter.notifyDataSetChanged();
         recyclerView = null;
@@ -129,7 +131,7 @@ public class ProportionalListFragment extends Fragment {
             }
         }, new NativeAdOptions.Builder().build());
 
-        CandidateListAdManager.getInstance().showAd();
+        new Handler().postDelayed(() -> CandidateListAdManager.getInstance().showAd(), 2000);
     }
 
     private class CandidateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -202,7 +204,7 @@ public class ProportionalListFragment extends Fragment {
 
             if(vo.status.equals("resign")){
                 viewHolder.resignLayout.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
