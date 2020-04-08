@@ -150,7 +150,7 @@ public class CandidateDetailFragment extends Fragment {
         list.add(new CandidateInfoVO("학력", candidateVO.getEducation()));
         list.add(new CandidateInfoVO("경력", candidateVO.getCareer() ));
         list.add(new CandidateInfoVO("전과기록\n유무(건수)", candidateVO.getCriminal() ));
-        list.add(new CandidateInfoVO("병역\n신고사항(본인)", candidateVO.getMilitary() ));
+        list.add(new CandidateInfoVO("병역\n신고사항\n(본인)", candidateVO.getMilitary() ));
         list.add(new CandidateInfoVO("재산\n신고액(천원)", candidateVO.getProperty() ));
         list.add(new CandidateInfoVO("입후보횟수", candidateVO.getRegCount()));
         list.add(new CandidateInfoVO("세금납부액", candidateVO.getTaxPayment() ));
