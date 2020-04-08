@@ -53,7 +53,7 @@
 
     <!--    candidate detail-->
     <dimen name="party_icon_height">25dp</dimen>
-    <dimen name="candidate_detail_title_text_size">20sp</dimen>
+    <dimen name="candidate_detail_title_text_size">18sp</dimen>
     <dimen name="candidate_detail_subtitle_text_size">17sp</dimen>
     <dimen name="candidate_detail_button_text_size">17sp</dimen>
 
