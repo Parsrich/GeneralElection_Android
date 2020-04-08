@@ -289,11 +289,12 @@ public class CandidateVO implements Serializable,Comparable<CandidateVO>{
 
     @Override
     public int compareTo(CandidateVO c) {
-        if (c.number.equals("")){
-            c.number = "999";
-        }
-        if (this.number.equals("")){
-            this.number = "999";
+        if (c.number.equals("") && this.number.equals("")){
+            return 0;
+        }else if (this.number.equals("") ){
+            return -1;
+        }else if (c.number.equals("") ){
+            return 1;
         }
 
 
