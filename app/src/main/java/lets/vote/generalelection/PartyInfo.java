@@ -51,7 +51,6 @@ public class PartyInfo {
                 put("여성의당", "#44009A");
                 put("자유당", "#30318B");
                 put("새벽당", "#101922");
-                put("정치개혁연합", "#C78665");
                 put("자영업당", "#56BA38");
                 put("직능자영업당", "#752B88");
                 put("충청의미래당", "#AE469F");
@@ -115,7 +114,6 @@ public class PartyInfo {
                 put("우리당", "https://ww.namu.la/s/c4c21deafe799f2eeb422752815063e7f23eb531ef122fe8f103310c6a3082f2a98323c4246beb936aed53ff73eb2090af63de098014881729d388ded1b74ceeb6227cf57a1ec96163c206770f7b6c39e67946877f2766f4df4c85a57e7f9c0a");
                 put("자유당", "https://w.namu.la/s/143f82a6e9b868d781789d9a58cc3e8b0d4c5b98dc77137420a84db9e52f187191e72e51b0d18c48c328e68eb1a24bb7feebca8ccbfaa8c7190746aa5e3d872e6629094ff67125fe2d0365eaf717d7a2e3edd55af3f2f8a4d3693ffcabc21ab2");
                 put("새벽당", "https://ww.namu.la/s/f9fd61107a8e1150f8040c2d330af00da40e920a57ce8f606bc534600a8e57bb82f630000872157e3771ace2ca001cf6a8fc07e7df86e5bed8b94fe0da44810eee3da78bc233fe3a0fd44a2e8309632bf5fb1bc9e1bf4b6e785380bc5d0aba61");
-                put("정치개혁연합", "https://ww.namu.la/s/ee674d8aa413f5e98772cc9cf564123117b311fd41ec9dbed4efec4078bf2eb520d0cfc9958f6bb46e458c2a210c746e533528d491724d77915fb5e69eefec7b5ac9dc71b7f82f0769c882d37ec7f8ee70d974e9eb3bf831a90f5497845044cf");
                 put("자영업당", "https://w.namu.la/s/1bcf3b4132ce7ca199ca03b5f7f92e1101114e018b4ddc85eeaf8c669dd5400740135b9c4ce9ba3e554ca89b452f35044d3774f0a9ca13efe023d4e9242ed44012aa07744ab0761ecfbdc99ed3137a867ca58ca33b45f1ae7d0b10027f0befb8");
                 put("직능자영업당", "https://ww.namu.la/s/2e7be01db9fa2e09dc47d26f0dc75be33549ebebba11b6ed427a8ec23bab0962c9c4933078c02052dd3ac91d48f8720b569df03b5eb8126b574ab4ea110bd4c6506915e202c53571d2bf3453485af25638e23634fc9b60b039b1f797594da61f");
                 put("충청의미래당", "https://w.namu.la/s/11478dbaaababff1e057d97c6950f7c589bef427eb832a00a2ddbbdfcca3f3ece98110032b029da2d5ab8c2de6a30bf293fb8cefed1418184af488cd1bee04a8f53d119708b2536801f605958e5589e98afc3739b47ff17a2001d6b00f9ab3f2");
@@ -177,18 +175,17 @@ public class PartyInfo {
                 put("우리당", 37);
                 put("자유당", 38);
                 put("새벽당", 39);
-                put("정치개혁연합", 40);
-                put("자영업당", 41);
-                put("직능자영업당", 42);
-                put("충청의미래당", 43);
-                put("친박연대", 44);
-                put("통일민주당", 45);
-                put("통합민주당", 46);
-                put("한국국민당", 47);
-                put("한국복지당", 48);
-                put("한나라당", 49);
-                put("한반도미래연합", 50);
-                put("홍익당", 51);
+                put("자영업당", 40);
+                put("직능자영업당", 41);
+                put("충청의미래당", 42);
+                put("친박연대", 43);
+                put("통일민주당", 44);
+                put("통합민주당", 45);
+                put("한국국민당", 46);
+                put("한국복지당", 47);
+                put("한나라당", 48);
+                put("한반도미래연합", 49);
+                put("홍익당", 50);
             }};
         }
 
@@ -243,7 +240,6 @@ public class PartyInfo {
                 put("사이버모바일국민정책당", 0);
                 put("시대전환", 0);
                 put("자유의새벽당", 0);
-                put("정치개혁연합", 0);
                 put("직능자영업당", 0);
                 put("친박연대", 0);
                 put("통합민주당", 0);
