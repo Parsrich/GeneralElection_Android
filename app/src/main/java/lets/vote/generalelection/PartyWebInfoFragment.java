@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -38,7 +37,6 @@ public class PartyWebInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_candidate_web_info, container, false);
-
         String keyword = getArguments().getString("keyword");
         ViewPager viewPager = getActivity().findViewById(R.id.viewPager);
         viewPager.setPadding(
@@ -47,9 +45,6 @@ public class PartyWebInfoFragment extends Fragment {
                 0,
                 getArguments().getInt("bottom"));
         viewPager.requestLayout();
-
-        TextView titleTextView = rootView.findViewById(R.id.titleTextView);
-        titleTextView.setText("정당 정보 위키");
 
         infoWebView = rootView.findViewById(R.id.infoWebView);
 
@@ -66,17 +61,7 @@ public class PartyWebInfoFragment extends Fragment {
         mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
         mWebSettings.setDomStorageEnabled(false); // 로컬저장소 허용 여부
 
-        String fullKeyword = keyword;
-
-        if ("코리아".equals(keyword)) {
-            fullKeyword = "가자코리아";
-        } else if ("새벽당".equals(keyword)) {
-            fullKeyword = "자유의새벽당";
-        } else if ("자영업당".equals(keyword)) {
-            fullKeyword = "중소자영업당";
-        }
-
-        infoWebView.loadUrl("https://namu.wiki/w/"+fullKeyword); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+        infoWebView.loadUrl("https://m.search.zum.com/search.zum?method=news&qm=f_typing.news&query="+keyword); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
         return rootView;
     }
 
