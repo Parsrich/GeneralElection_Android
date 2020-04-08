@@ -126,6 +126,7 @@
                     android:paddingRight="@dimen/candidate_item_background_left_right_padding"
                     android:paddingTop="@dimen/candidate_item_background_top_bottom_padding"
                     android:paddingBottom="@dimen/candidate_item_background_top_bottom_padding"
+                    android:layout_marginLeft="@dimen/too_small_margin"
                     android:fontFamily="@font/gmarket_sans_medium"
                     app:layout_constraintLeft_toRightOf="@id/candidateDetailNumber"
                     app:layout_constraintTop_toTopOf="@id/candidateDetailNumber"
