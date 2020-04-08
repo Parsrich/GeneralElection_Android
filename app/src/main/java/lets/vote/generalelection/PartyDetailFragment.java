@@ -251,7 +251,7 @@ public class PartyDetailFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull PromiseViewHolder holder, final int position) {
             holder.promiseNumber.setText(list.get(position).prmsOrd);
-            holder.promiseContent.setText(list.get(position).prmsTitle);
+            holder.promiseContent.setText("["+list.get(position).prmsRealmName+"]\n"+list.get(position).prmsTitle);
             if (position % 2 == 1 ){
                 holder.contentBackground.setBackground(getResources().getDrawable(R.color.candidateInfoBackgroundColor));
             }
