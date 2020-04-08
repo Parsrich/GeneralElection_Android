@@ -100,7 +100,7 @@ public class CandidateVO implements Serializable,Comparable<CandidateVO>{
         setRegCount(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_REG_COUNT)));
         setRegCount(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_REG_COUNT)));
         setRecommend(cursor.getString(cursor.getColumnIndex(CandidateContract.CandidateEntry.COLUMN_NAME_RECOMMEND)));
-        Log.d("test", "CandidateVO: " + getName());
+//        Log.d("test", "CandidateVO: " + getName());
     }
 
     public String getId() {

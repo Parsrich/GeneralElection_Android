@@ -1,9 +1,11 @@
 package lets.vote.generalelection;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -44,7 +46,6 @@ public class MainMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("test", "onCreateView");
         View rootView =  inflater.inflate(R.layout.fragment_main_menu, container, false);
 
         ImageView guideBtn = rootView.findViewById(R.id.mainGuideBtn);
@@ -105,8 +106,17 @@ public class MainMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 adInstance.showAd(getContext());
+                NetworkChecker.setup(getContext());
+                if (!NetworkChecker.checkOn()){
+                    NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        }
+                    }).show();
+                }else {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,partyListFragment).addToBackStack(null).commit();
-            }
+            }}
         });
 
         final Fragment searchCandidateFragment = SearchCandidateFragment.getInstance();
@@ -114,8 +124,17 @@ public class MainMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 adInstance.showAd(getContext());
+                NetworkChecker.setup(getContext());
+                if (!NetworkChecker.checkOn()){
+                    NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        }
+                    }).show();
+                }else {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,searchCandidateFragment).addToBackStack(null).commit();
-            }
+            }}
         });
 
         guideBtn.setOnClickListener(new View.OnClickListener() {

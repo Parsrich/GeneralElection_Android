@@ -11,12 +11,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,9 +32,86 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+
+        NetworkChecker.setup(this);
+        if (NetworkChecker.checkOn()){
+            Log.d("test", "### 연결 " );
+            dataSetting();
+        }else {
+            NetworkChecker.alert(this, "확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            }).show();
+        }
+//
+//        if (manager.getNetworkInfo(NetworkCapabilities.TRANSPORT_CELLULAR).isConnected()
+//                || manager.getNetworkInfo(NetworkCapabilities.TRANSPORT_WIFI).isConnected()){
+//
+//
+//
+//        }else {
+//            Log.d("test", "### 연결 안됨  " );
+//            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//            alertDialog.setTitle("네트워크 에러").setMessage("네트워크를 확인해주세요.");
+//            alertDialog.setPositiveButton("ㅂㅇ", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    finish();
+//                }
+//            });
+//            alertDialog.show();
+//        }
+
+//        NetworkChecker.setup(this);
+//        NetworkChecker.checkOn(new ConnectivityManager.NetworkCallback(){
+//            @Override
+//            public void onAvailable(@NonNull Network network) {
+//                // 네트워크를 사용할 준비가 되었을 때
+//                Log.d("test", "### onAvailable: 연결  " );
+//                NetworkChecker.manager.unregisterNetworkCallback(this);
+//            }
+//
+//            @Override
+//            public void onLost(@NonNull Network network) {
+//                // 네트워크가 끊겼을 때
+//                NetworkChecker.alert(getApplicationContext(), "버튼", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Log.d("test", "버튼클릭 " );
+//                    }
+//                }).show();
+//                Log.d("test", "### onLost: 끊김 " );
+//            }
+//        });
+
+//
+//        NetworkRequest.Builder builder = new NetworkRequest.Builder();
+//        builder.addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR);
+//        builder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI);
+//
+//
+//        final ConnectivityManager.NetworkCallback callback = new ConnectivityManager.NetworkCallback(){
+//            @Override
+//            public void onAvailable(@NonNull Network network) {
+//                // 네트워크를 사용할 준비가 되었을 때
+//                Log.d("test", "### onAvailable: 연결  " );
+//                manager.unregisterNetworkCallback(this);
+//            }
+//
+//            @Override
+//            public void onLost(@NonNull Network network) {
+//                // 네트워크가 끊겼을 때
+//                Log.d("test", "### onLost: 끊김 " );
+//            }
+//        };
+//        manager.registerNetworkCallback(builder.build(), callback);
+    }
+
+    private void dataSetting(){
         FirebaseDistrictManager.setup();
-
-
         sharedPreferences = getApplicationContext().getSharedPreferences("app", Context.MODE_PRIVATE);
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         final FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
@@ -68,7 +142,7 @@ public class SplashActivity extends AppCompatActivity {
                         if (localVersion == -1 ){
 
                             getData();
-                            sharedPreferences.edit().putInt("dbVersion",1).commit();
+                            sharedPreferences.edit().putInt("dbVersion",getVersion).commit();
                             Log.d("test", "최초" );
                         } else if ( getVersion != localVersion ){
                             //다르면 처리하고
@@ -81,17 +155,12 @@ public class SplashActivity extends AppCompatActivity {
                             Log.d("test", "다름" );
                         }else {
                             Log.d("test", "같음" );
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            finish();
                         }
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
-        // 앱버전 체크
-//        final int appVersion = Integer.parseInt(mFirebaseRemoteConfig.getString("android_app_version"));
-
-        // 디비 버전 체크
-
     }
 
     public boolean checkApplicationVersion() {
@@ -136,14 +205,11 @@ public class SplashActivity extends AppCompatActivity {
 
 
                 for(String k : resultMap.keySet()){
-//                    SQLiteDatabase writableDatabase=helper.getWritableDatabase();
-//                    writableDatabase.rawQuery(CandidateContract.SQL_DELETE_ENTRIES,null);
 
 
                     List<Object> tempList = (List<Object>) resultMap.get(k);
 
                     for(int i = 0 ; i < tempList.size(); i ++){
-                        Log.d("test", "newRowId" +tempList.toString());
                         CandidateVO temp = new CandidateVO((Map<String, Object>) tempList.get(i));
                         ContentValues values = new ContentValues();
                         values.put(CandidateContract.CandidateEntry.COLUMN_NAME_ID, temp.getId());
@@ -170,7 +236,7 @@ public class SplashActivity extends AppCompatActivity {
                         values.put(CandidateContract.CandidateEntry.COLUMN_NAME_STATUS, temp.getStatus());
                         values.put(CandidateContract.CandidateEntry.COLUMN_NAME_RECOMMEND, temp.getRecommend());
                         db.insert(CandidateContract.CandidateEntry.TABLE_NAME, null, values);
-                        Log.d("test", "values: " +values);
+//                        Log.d("test", "values: " +values);
                     }
                 }
 
@@ -182,4 +248,5 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
     }
+
 }
