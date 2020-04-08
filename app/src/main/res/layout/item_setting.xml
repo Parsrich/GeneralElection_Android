@@ -10,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_sans_medium"
-        android:textSize="20sp"
-        android:paddingStart="20dp"
+        android:textSize="@dimen/setting_list_text_size"
+        android:paddingStart="@dimen/medium_padding"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/navDeactivate"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/medium_margin"
         app:layout_constraintTop_toBottomOf="@id/settingItem"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,12 +22,12 @@
         app:layout_constraintBottom_toBottomOf="@id/tabs"
         android:background="@drawable/tab_shadow"
         android:layout_width="0dp"
-        android:layout_height="70dp"/>
+        android:layout_height="@dimen/tap_shadow_height"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/tap_height"
         app:tabIndicatorHeight="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="@dimen/too_small_margin"
         app:layout_constraintBottom_toTopOf="@id/tabs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

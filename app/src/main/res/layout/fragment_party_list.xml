@@ -8,23 +8,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
         android:background="@drawable/title_shadow"
         android:fontFamily="@font/gmarket_sans_bold"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:text="@string/party_list_title"
-        android:textSize="30sp"/>
+        android:textSize="@dimen/main_title"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/fragment_round_corner"
-        android:paddingBottom="10dp"
-        android:paddingTop="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        android:padding="@dimen/fragment_padding"
         tools:context=".PartyListFragment">
 
     <androidx.recyclerview.widget.RecyclerView

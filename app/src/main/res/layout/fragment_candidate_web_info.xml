@@ -8,14 +8,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
         android:background="@drawable/title_shadow"
         android:fontFamily="@font/gmarket_sans_bold"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:text="@string/candidate_detail_title"
-        android:textSize="30sp"/>
+        android:textSize="@dimen/main_title"/>
 
     <WebView
         android:id="@+id/infoWebView"
