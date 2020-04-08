@@ -8,14 +8,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
         android:background="@drawable/title_shadow"
         android:fontFamily="@font/gmarket_sans_bold"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:text="@string/candidate_search_title"
-        android:textSize="30sp"/>
+        android:textSize="@dimen/main_title"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,7 +28,7 @@
         android:id="@+id/searchCandidateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize = "30sp"
+        android:textSize = "@dimen/main_title"
         android:fontFamily="@font/gmarket_sans_bold"
         android:text="@string/candidate_search_title"
         android:textColor="@color/candidateSearchFontColor"
@@ -43,15 +43,15 @@
         android:id="@+id/searchCandidate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginRight="@dimen/small_margin"
         android:imeOptions="actionSearch"
         android:background="@drawable/search_border"
 
         android:fontFamily="@font/gmarket_sans_medium"
         android:hint="이름 입력"
-        android:padding="20dp"
+        android:padding="@dimen/medium_padding"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -65,8 +65,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gmarket_sans_light"
         android:text="*검색창에 후보자 이름을 입력해주세요."
-        android:layout_marginTop="8dp"
-        android:textSize="15sp"
+        android:layout_marginTop="@dimen/too_small_margin"
+        android:textSize="@dimen/district_nav_text_size"
         app:layout_constraintTop_toBottomOf="@id/searchCandidate"
         app:layout_constraintStart_toStartOf="@id/searchCandidate"
         />

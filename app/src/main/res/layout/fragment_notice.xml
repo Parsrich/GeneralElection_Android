@@ -8,14 +8,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="@dimen/small_margin"
+        android:paddingBottom="@dimen/small_margin"
         android:background="@drawable/title_shadow"
         android:fontFamily="@font/gmarket_sans_bold"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:text="공지사항"
-        android:textSize="30sp"/>
+        android:textSize="@dimen/main_title"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,16 +23,16 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".DonationFragment"
         android:orientation="vertical"
-        android:padding="25dp"
-        android:paddingEnd="35dp"
-        android:paddingBottom="10dp"
+        android:padding="@dimen/fragment_padding"
+        android:paddingEnd="@dimen/fragment_right_padding"
+        android:paddingBottom="@dimen/small_padding"
         android:background="@drawable/fragment_round_corner">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/noticeRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginBottom="@dimen/small_margin"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

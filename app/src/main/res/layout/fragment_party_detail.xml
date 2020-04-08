@@ -10,23 +10,20 @@
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
+    android:paddingTop="@dimen/small_padding"
+    android:paddingBottom="@dimen/small_padding"
     android:background="@drawable/title_shadow"
     android:fontFamily="@font/gmarket_sans_bold"
     android:textAlignment="center"
     android:textColor="@color/white"
     android:text="@string/party_detail_title"
-    android:textSize="30sp"/>
+    android:textSize="@dimen/main_title"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/fragment_round_corner"
-        android:paddingBottom="30dp"
-        android:paddingTop="30dp"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp">
+        android:padding="@dimen/fragment_padding">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
@@ -39,7 +36,7 @@
         <ImageView
             android:id="@+id/partyDetailIcon"
             android:layout_width="0dp"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/party_icon_height"
             android:src="@drawable/ic_main2"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,8 +49,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/gmarket_sans_bold"
             android:textColor="@color/common_google_signin_btn_text_light_pressed"
-            android:textSize="23sp"
-            android:layout_marginStart="10dp"
+            android:textSize="@dimen/candidate_detail_title_text_size"
+            android:layout_marginStart="@dimen/candidate_detail_title_margin"
             app:layout_constraintTop_toTopOf="@id/partyDetailIcon"
             app:layout_constraintBottom_toBottomOf="@id/partyDetailIcon"
             app:layout_constraintLeft_toRightOf="@id/partyDetailIcon"
@@ -65,8 +62,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/gmarket_sans_bold"
             android:textColor="@color/navActivate"
-            android:textSize="20sp"
-            android:layout_marginStart="10dp"
+            android:textSize="@dimen/candidate_detail_subtitle_text_size"
+            android:layout_marginStart="@dimen/candidate_detail_title_margin"
             app:layout_constraintTop_toTopOf="@id/partyDetailIcon"
             app:layout_constraintBottom_toBottomOf="@id/partyDetailIcon"
             app:layout_constraintLeft_toRightOf="@id/partyDetailName"
@@ -130,10 +127,10 @@
                     android:background="@drawable/color_button"
                     android:fontFamily="@font/gmarket_sans_bold"
                     android:text="정당이슈보기"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/candidate_detail_button_text_size"
                     android:textColor="@color/white"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="@dimen/candidate_detail_default_margin"
+                    android:layout_marginBottom="@dimen/candidate_detail_default_margin"
                     app:layout_constraintVertical_weight="1"
                     app:layout_constraintTop_toBottomOf="@id/proportionalList"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -158,7 +155,7 @@
             android:id="@+id/content"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/medium_margin"
             app:layout_constraintTop_toBottomOf="@id/headerDetail"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -167,7 +164,7 @@
             <ImageView
                 android:id="@+id/promiseIcon"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="@dimen/party_icon_height"
                 android:src="@drawable/ic_paper"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -179,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gmarket_sans_bold"
                 android:textColor="@color/common_google_signin_btn_text_light_pressed"
-                android:textSize="23sp"
+                android:textSize="@dimen/candidate_detail_title_text_size"
                 app:layout_constraintTop_toTopOf="@id/promiseIcon"
                 app:layout_constraintBottom_toBottomOf="@id/promiseIcon"
                 app:layout_constraintLeft_toRightOf="@id/promiseIcon"
@@ -190,7 +187,7 @@
                 android:id="@+id/promiseRecyclerView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/small_margin"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/promiseTitle"
@@ -219,10 +216,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="@dimen/small_margin"
                     android:fontFamily="@font/gmarket_sans_medium"
                     android:text="정당 공약이 없습니다. "
-                    android:textSize="20sp"
+                    android:textSize="@dimen/candidate_detail_subtitle_text_size"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
