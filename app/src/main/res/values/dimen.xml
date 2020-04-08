@@ -4,6 +4,7 @@
     <!--    공통-->
 
     <dimen name="too_small_padding">3dp</dimen>
+    <dimen name="basic_small_padding">10dp</dimen>
     <dimen name="small_padding">15dp</dimen>
     <dimen name="large_padding">24dp</dimen>
     <dimen name="medium_padding">17dp</dimen>
