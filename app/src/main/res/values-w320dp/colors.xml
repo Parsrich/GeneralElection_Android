@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="white">#FFFFFF</color>
+<!--    메인 색-->
+    <color name="mainColor">#513E98</color>
+<!--    메인 연한색-->
+    <color name="mainSoftColor">#BEC5E4</color>
+<!--    지역구검색 폰트색-->
+    <color name="districtSearchFontColor">#333333</color>
+<!--    후보자이름 폰트색-->
+    <color name="candidateNameFontColor">#1C252C</color>
+<!--    생년월일 폰트색-->
+    <color name="birthFontColor">#4D4D4D</color>
+<!--    주소 폰트색-->
+    <color name="addressFontColor">#6D6E70</color>
+<!--    후보자검색 폰트색-->
+    <color name="candidateSearchFontColor">#6358CC</color>
+<!--    후보자검색 폰트색-->
+    <color name="candidateInfoBackgroundColor">#F9F9F9</color>
+<!--    버튼-->
+    <color name="detailBtn">#8271CC</color>
+<!--nav 활성    -->
+    <color name="navActivate">#7269EA</color>
+<!--nav 비활성    -->
+    <color name="navDeactivate">#CECCCD</color>
+
+    <color name="action_start">#7269EA</color>
+    <color name="action_end">#AA80FC</color>
+
+
+</resources>
