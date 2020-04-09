@@ -141,7 +141,7 @@ public class PartyDetailFragment extends Fragment {
         promiseTitle.setText((partyName+" 공약"));
 
 
-        if (!proportional.toString().equals("0")){
+        if (proportional != null && !proportional.toString().equals("0")){
             partyDetailNumber.setText("비례정당번호"+proportional.toString());
         }
 
