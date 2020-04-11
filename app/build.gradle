@@ -20,6 +20,7 @@ android {
             buildConfigField "String", "CANDIDATE_SEARCH_AD_ID", "\"ca-app-pub-6176394344908792/4079192412\""
             buildConfigField "String", "CANDIDATE_LIST_AD_ID", "\"ca-app-pub-6176394344908792/3065493648\""
             buildConfigField "int", "REMOTE_CONFIG_REQUEST_TIME", "43200"
+            signingConfig signingConfigs.debug
         }
         debug {
             splits.abi.enable = false
