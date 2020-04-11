@@ -105,6 +105,11 @@ public class PartyDetailFragment extends Fragment {
 
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -218,7 +223,8 @@ public class PartyDetailFragment extends Fragment {
                 bundle.putInt("right",viewPager.getPaddingRight());
                 bundle.putInt("bottom",viewPager.getPaddingBottom());
                 partyWebInfoFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,partyWebInfoFragment).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainContainer,partyWebInfoFragment).addToBackStack(null).commit();
             }
         });
 

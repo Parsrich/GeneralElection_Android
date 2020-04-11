@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DistrictListFragment extends Fragment {
+public class DistrictListFragment extends Fragment implements MainActivity.onKeyBackPressedListener {
     static ConnectivityManager.NetworkCallback mCallback;
     private static DistrictListFragment instance;
     private RecyclerView recyclerView;
@@ -72,6 +72,13 @@ public class DistrictListFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+
+        ((MainActivity) context).setOnKeyBackPressedListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -101,10 +108,45 @@ public class DistrictListFragment extends Fragment {
         dongGroup = rootView.findViewById(R.id.navDongGroup);
         dongGroup.setVisibility(View.INVISIBLE);
 
-        navSiText.setOnClickListener(new View.OnClickListener(){
+        navSiText.setOnClickListener(v -> goToSiList());
+        navGuText.setOnClickListener(v -> goToGuList());
 
-            @Override
-            public void onClick(View v) {
+        recyclerView.setAdapter(districtAdapter);
+
+        NetworkChecker.setup(getContext());
+        if (NetworkChecker.checkOn()){
+            Log.d("test", "### 연결 " );
+
+            /* 데이터 가져오기 */
+            if (districtMap == null || districtMap.size() == 0 ){
+                progressBar.setVisibility(View.VISIBLE);
+
+                FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
+                    @Override
+                    public void onChanged(Map<String, Object> resultMap) {
+                        districtMap = resultMap;
+                        districtList.clear();
+                        districtList.addAll(getDistrictList(districtHistoryStack));
+                        districtAdapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+                progressBar.setVisibility(View.VISIBLE);
+                FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
+                    @Override
+                    public void onChanged(Map<String, Object> resultMap) {
+                        districtMap = resultMap;
+                        districtList.clear();
+                        districtList.addAll(getDistrictList(districtHistoryStack));
+                        districtAdapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+
+            } else {
+                districtList.addAll(getDistrictList(districtHistoryStack));
+                districtAdapter.notifyDataSetChanged();
+
                 if(districtHistoryStack.size()>0){
                     while (districtHistoryStack.size() != 0){
                         districtHistoryStack.pop();
@@ -122,12 +164,7 @@ public class DistrictListFragment extends Fragment {
                     navSiText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
                     navGuText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
                 }
-            }
-        });
-        navGuText.setOnClickListener(new View.OnClickListener(){
 
-            @Override
-            public void onClick(View v) {
                 if(districtHistoryStack.size()>1){
                     while (districtHistoryStack.size() != 1){
                         districtHistoryStack.pop();
@@ -142,83 +179,7 @@ public class DistrictListFragment extends Fragment {
                     navGuText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
                 }
             }
-        });
-
-
-        recyclerView.setAdapter(districtAdapter);
-
-
-
-        NetworkChecker.setup(getContext());
-        if (NetworkChecker.checkOn()){
-            Log.d("test", "### 연결 " );
-
-
-
-
-        /* 데이터 가져오기 */
-        if (districtMap == null || districtMap.size() == 0 ){
-            progressBar.setVisibility(View.VISIBLE);
-
-            FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
-                @Override
-                public void onChanged(Map<String, Object> resultMap) {
-                    districtMap = resultMap;
-                    districtList.clear();
-                    districtList.addAll(getDistrictList(districtHistoryStack));
-                    districtAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                }
-            });
-            progressBar.setVisibility(View.VISIBLE);
-            FirebaseDistrictManager.getDistrictMap().observe(this, new Observer<Map<String,Object>>() {
-                @Override
-                public void onChanged(Map<String, Object> resultMap) {
-                    districtMap = resultMap;
-                    districtList.clear();
-                    districtList.addAll(getDistrictList(districtHistoryStack));
-                    districtAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                }
-            });
-
         } else {
-            districtList.addAll(getDistrictList(districtHistoryStack));
-            districtAdapter.notifyDataSetChanged();
-
-            if(districtHistoryStack.size()>0){
-                while (districtHistoryStack.size() != 0){
-                    districtHistoryStack.pop();
-                }
-                districtList.clear();
-                districtList.addAll(getDistrictList(districtHistoryStack));
-                districtAdapter.notifyDataSetChanged();
-
-                navSiText.setText(R.string.si_title);
-                navGuText.setText(R.string.gu_title);
-                navDongText.setText(R.string.dong_title);
-
-                guGroup.setVisibility(View.INVISIBLE);
-                dongGroup.setVisibility(View.INVISIBLE);
-                navSiText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
-                navGuText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
-            }
-
-            if(districtHistoryStack.size()>1){
-                while (districtHistoryStack.size() != 1){
-                    districtHistoryStack.pop();
-                }
-                districtList.clear();
-                districtList.addAll(getDistrictList(districtHistoryStack));
-                districtAdapter.notifyDataSetChanged();
-
-                navGuText.setText(R.string.gu_title);
-                navDongText.setText(R.string.dong_title);
-                dongGroup.setVisibility(View.INVISIBLE);
-                navGuText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
-            }
-        }
-        }else {
             NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -229,41 +190,41 @@ public class DistrictListFragment extends Fragment {
         return rootView;
     }
 
-//    public void callDataFromFirebase(){
-//
-//        FirebaseDistrictManager.getDistrictMap(getActivity(), new NetworkCheck() {
-//            @Override
-//            public void successHandler() {
-//            }
-//
-//            @Override
-//            public void failureHandler() {
-//
-//                // 확인
-//                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//                builder.setTitle("네트워크 에러").setMessage("네트워크를 확인해주세요.");
-//                builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        callDataFromFirebase();
-//                    }
-//                });
-//            }
-//        }).observe(DistrictListFragment.this, new Observer<Map<String,Object>>() {
-//            @Override
-//            public void onChanged(Map<String, Object> resultMap) {
-//                Log.d("test","resultMap.toString() "+resultMap.toString());
-//                Log.d("test","districtHistoryStack "+districtHistoryStack.toString());
-//                districtMap = resultMap;
-//                districtList.clear();
-//                districtList.addAll(getDistrictList(districtHistoryStack));
-//                Log.d("test",districtList.toString());
-//                districtAdapter.notifyDataSetChanged();
-//                progressBar.setVisibility(View.GONE);
-//            }
-//        });
-//    }
+    void goToSiList() {
+        if(districtHistoryStack.size()>0){
+            while (districtHistoryStack.size() != 0){
+                districtHistoryStack.pop();
+            }
+            districtList.clear();
+            districtList.addAll(getDistrictList(districtHistoryStack));
+            districtAdapter.notifyDataSetChanged();
+
+            navSiText.setText(R.string.si_title);
+            navGuText.setText(R.string.gu_title);
+            navDongText.setText(R.string.dong_title);
+
+            guGroup.setVisibility(View.INVISIBLE);
+            dongGroup.setVisibility(View.INVISIBLE);
+            navSiText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
+            navGuText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
+        }
+    }
+
+    void goToGuList() {
+        if(districtHistoryStack.size()>1){
+            while (districtHistoryStack.size() != 1){
+                districtHistoryStack.pop();
+            }
+            districtList.clear();
+            districtList.addAll(getDistrictList(districtHistoryStack));
+            districtAdapter.notifyDataSetChanged();
+
+            navGuText.setText(R.string.gu_title);
+            navDongText.setText(R.string.dong_title);
+            dongGroup.setVisibility(View.INVISIBLE);
+            navGuText.setBackground(getResources().getDrawable(R.drawable.nav_activate));
+        }
+    }
 
     public List<String> getDistrictList( Stack<String> history){
         List<String> resultList = new ArrayList<>();
@@ -297,6 +258,19 @@ public class DistrictListFragment extends Fragment {
         districtAdapter.notifyDataSetChanged();
 
         recyclerView = null;
+    }
+
+    @Override
+    public void onBack() {
+        if (districtHistoryStack.size() == 2) {
+            goToGuList();
+        } else if (districtHistoryStack.size() == 1) {
+            goToSiList();
+        } else {
+            MainActivity activity = (MainActivity) getActivity();
+            activity.setOnKeyBackPressedListener(null);
+            activity.onBackPressed();
+        }
     }
 
     private class DistrictAdapter extends RecyclerView.Adapter<DistrictViewHolder> {
@@ -352,7 +326,12 @@ public class DistrictListFragment extends Fragment {
                             Fragment candidateFragment = CandidateListFragment.getInstance();
 
                             candidateFragment.setArguments(candidateDetailBundle);
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,candidateFragment).addToBackStack(null).commit();
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+
+                                    .replace(R.id.mainContainer, candidateFragment)
+                                    .addToBackStack(null)
+                                    .commit();
 //                            Log.d("test","클릭후 최종 지역이름리스트 ,"+getActivity().getSupportFragmentManager().toString());
 
                             while (districtHistoryStack.size() != 2){

@@ -64,6 +64,11 @@ public class SearchCandidateFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
@@ -135,7 +140,8 @@ public class SearchCandidateFragment extends Fragment {
                             }
                             bundle.putSerializable("vo",vo);
                             detailFragment.setArguments(bundle);
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,detailFragment).addToBackStack(null).commit();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.mainContainer,detailFragment).addToBackStack(null).commit();
                             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                             v.clearFocus();
@@ -150,7 +156,8 @@ public class SearchCandidateFragment extends Fragment {
                             bundle.putString("searchKeyword",v.getText().toString());
 
                             searchCandidateListFragment.setArguments(bundle);
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,searchCandidateListFragment).addToBackStack(null).commit();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.mainContainer,searchCandidateListFragment).addToBackStack(null).commit();
                             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                             v.clearFocus();

@@ -123,6 +123,11 @@ public class CandidateListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_candidate_list, container, false);
@@ -354,7 +359,8 @@ public class CandidateListFragment extends Fragment {
                             bundle.putSerializable("vo",vo);
 
                             detailFragment.setArguments(bundle);
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,detailFragment).addToBackStack(null).commit();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.mainContainer,detailFragment).addToBackStack(null).commit();
                         }
                     }
                 });

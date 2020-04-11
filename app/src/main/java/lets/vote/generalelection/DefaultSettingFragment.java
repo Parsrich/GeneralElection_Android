@@ -23,13 +23,20 @@ public class DefaultSettingFragment extends Fragment {
         }
         return instance;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_default_setting, container, false);
         Fragment settingFragment = new SettingFragment();
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.defaultSettingContainer,settingFragment).commit();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.defaultSettingContainer,settingFragment).commit();
 
 
         return rootView;

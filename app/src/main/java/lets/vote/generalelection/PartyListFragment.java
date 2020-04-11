@@ -52,6 +52,11 @@ public class PartyListFragment extends Fragment {
 
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -113,7 +118,8 @@ public class PartyListFragment extends Fragment {
                     bundle.putString("partName", vo.getName());
                     bundle.putInt("partyNumber", vo.getNumber());
                     partyDetailFragment.setArguments(bundle);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,partyDetailFragment).addToBackStack(null).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.mainContainer,partyDetailFragment).addToBackStack(null).commit();
                 }
             });
 

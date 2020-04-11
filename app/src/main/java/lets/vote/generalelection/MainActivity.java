@@ -6,6 +6,7 @@ import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.tabs.TabLayout;
@@ -19,14 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import static lets.vote.generalelection.Util.print;
+
 public class MainActivity extends AppCompatActivity {
     public SwipeDisabledViewPager viewPager;
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        finish();
-//    }
+    TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         
         viewPager.setAdapter(viewPagerAdapter);
 
-        TabLayout tabs = findViewById(R.id.tabs);
+        tabs = findViewById(R.id.tabs);
 
         tabs.setupWithViewPager(viewPager);
 
@@ -76,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 viewPager.setCurrentItem(tab.getPosition(),false);
 
                 if(tab.getPosition()==0){
+
                     imageViewTab1.setImageResource(R.drawable.ic_tab1_1);
                     imageViewTab2.setImageResource(R.drawable.ic_tab2);
                     imageViewTab3.setImageResource(R.drawable.ic_tab3);
@@ -137,5 +136,62 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+
+
+    // 뒤로가기 버튼 입력시간이 담길 long 객체
+    private long pressedTime = 0;
+
+    // 뒤로가기 버튼을 눌렀을 때의 오버라이드 메소드
+    @Override
+    public void onBackPressed() {
+        if (mOnKeyBackPressedListener != null) {
+            mOnKeyBackPressedListener.onBack();
+            return;
+        }
+
+        if(!isLastFragment()) {
+            super.onBackPressed();
+        } else {
+            if ( pressedTime == 0 ) {
+                Toast.makeText(getApplicationContext(), " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_SHORT).show();
+                pressedTime = System.currentTimeMillis();
+            }
+            else {
+                int seconds = (int) (System.currentTimeMillis() - pressedTime);
+
+                if ( seconds > 2000 ) {
+                    Toast.makeText(getApplicationContext(), " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_SHORT).show();
+                    pressedTime = 0 ;
+                }
+                else {
+                    super.onBackPressed();
+                    finish();
+                }
+            }
+        }
+    }
+    public interface onKeyBackPressedListener {
+        void onBack();
+    }
+    private onKeyBackPressedListener mOnKeyBackPressedListener;
+
+    public void setOnKeyBackPressedListener(onKeyBackPressedListener listener) {
+        mOnKeyBackPressedListener = listener;
+    }
+
+    boolean isLastFragment() {
+        // 가이드 인경우 무조건 두번 back
+        if (tabs.getSelectedTabPosition() == 0) {
+            return true;
+        } else if (tabs.getSelectedTabPosition() == 1) {
+            return getSupportFragmentManager()
+                    .findFragmentById(R.id.mainContainer) instanceof MainMenuFragment;
+
+        } else { //if (tabs.getSelectedTabPosition() == 2) {
+            return getSupportFragmentManager()
+                    .findFragmentById(R.id.defaultSettingContainer) instanceof SettingFragment;
+        }
     }
 }

@@ -68,6 +68,11 @@ public class CandidateDetailFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_candidate_detail, container, false);
@@ -139,7 +144,8 @@ public class CandidateDetailFragment extends Fragment {
                 bundle.putInt("bottom",viewPager.getPaddingBottom());
                 candidateWebInfoFragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,candidateWebInfoFragment).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainContainer,candidateWebInfoFragment).addToBackStack(null).commit();
             }
         });
 

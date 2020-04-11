@@ -1,9 +1,13 @@
 package lets.vote.generalelection;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -27,6 +31,11 @@ public class PartyWebInfoFragment extends Fragment {
             instance = new PartyWebInfoFragment();
         }
         return instance;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -55,8 +64,8 @@ public class PartyWebInfoFragment extends Fragment {
         infoWebView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
         mWebSettings = infoWebView.getSettings(); //세부 세팅 등록
         mWebSettings.setJavaScriptEnabled(true); // 웹페이지 자바스클비트 허용 여부
-        mWebSettings.setSupportMultipleWindows(false); // 새창 띄우기 허용 여부
-        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(false); // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
+        mWebSettings.setSupportMultipleWindows(true); // 새창 띄우기 허용 여부
+        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true); // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
         mWebSettings.setLoadWithOverviewMode(false); // 메타태그 허용 여부
         mWebSettings.setUseWideViewPort(true); // 화면 사이즈 맞추기 허용 여부
         mWebSettings.setSupportZoom(false); // 화면 줌 허용 여부
@@ -64,6 +73,28 @@ public class PartyWebInfoFragment extends Fragment {
         mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
         mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
         mWebSettings.setDomStorageEnabled(false); // 로컬저장소 허용 여부
+        infoWebView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
+                WebView newWebView = new WebView(getContext());
+                WebView.WebViewTransport transport
+                        = (WebView.WebViewTransport) resultMsg.obj;
+                transport.setWebView(newWebView);
+                resultMsg.sendToTarget();
+
+                newWebView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                        Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+//                        browserIntent.setData(Uri.parse(url));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                        return true;
+                    }
+                });
+
+                return true;
+            }
+        });
 
         String fullKeyword = keyword;
 

@@ -41,6 +41,11 @@ public class SettingFragment extends Fragment {
 
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -85,7 +90,11 @@ public class SettingFragment extends Fragment {
                         switch (position) {
                             case 0:
                                 // 공지사항 페이지
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.defaultSettingContainer,NoticeFragment.getInstance()).addToBackStack("setting").commit();
+                                getActivity().getSupportFragmentManager().
+                                        beginTransaction()
+                                        .replace(R.id.defaultSettingContainer, NoticeFragment.getInstance())
+                                        .addToBackStack("setting")
+                                        .commit();
                                 break;
                             case 1:
                                 // 오류 문의
