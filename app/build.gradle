@@ -7,8 +7,8 @@ android {
         applicationId "lets.vote.generalelection"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -19,7 +19,7 @@ android {
             buildConfigField "String", "FULL_SCREEN_AD_ID", "\"ca-app-pub-6176394344908792/1644600769\""
             buildConfigField "String", "CANDIDATE_SEARCH_AD_ID", "\"ca-app-pub-6176394344908792/4079192412\""
             buildConfigField "String", "CANDIDATE_LIST_AD_ID", "\"ca-app-pub-6176394344908792/3065493648\""
-            buildConfigField "int", "REMOTE_CONFIG_REQUEST_TIME", "43200"
+            buildConfigField "int", "REMOTE_CONFIG_REQUEST_TIME", "1800"
             signingConfig signingConfigs.debug
         }
         debug {

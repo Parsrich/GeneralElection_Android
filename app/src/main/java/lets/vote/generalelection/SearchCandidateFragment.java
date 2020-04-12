@@ -51,6 +51,7 @@ public class SearchCandidateFragment extends Fragment {
     private static List<String> nameList;
     private static CandidateDBHelper helper;
     private static SQLiteDatabase db;
+    AutoCompleteTextView candidateSearchTextView;
 
     public SearchCandidateFragment() {
         // Required empty public constructor
@@ -66,6 +67,7 @@ public class SearchCandidateFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        candidateSearchTextView.setText("");
     }
 
     @Override
@@ -103,7 +105,7 @@ public class SearchCandidateFragment extends Fragment {
             }
         }, new NativeAdOptions.Builder().build());
 
-        new Handler().postDelayed(() -> CandidateListAdManager.getInstance().showAd(), 1000);
+        new Handler().postDelayed(() -> CandidateListAdManager.getInstance().showAd(), 2000);
     }
 
     @Override
@@ -112,7 +114,7 @@ public class SearchCandidateFragment extends Fragment {
 
 
         View rootView =inflater.inflate(R.layout.fragment_search_candidate, container, false);
-        final AutoCompleteTextView candidateSearchTextView = rootView.findViewById(R.id.searchCandidate);
+        candidateSearchTextView = rootView.findViewById(R.id.searchCandidate);
 
         callAd(rootView);
 

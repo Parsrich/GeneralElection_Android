@@ -34,6 +34,9 @@ class FirebaseDistrictManager {
     }
 
     public static DatabaseReference getDbRef(String path) {
+        if (rootRef == null) {
+            setup();
+        }
         return FirebaseDistrictManager.dbRef = rootRef.child(path);
     }
 

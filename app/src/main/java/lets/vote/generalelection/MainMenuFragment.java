@@ -100,78 +100,58 @@ public class MainMenuFragment extends Fragment {
         ConstraintLayout candidateBtn = rootView.findViewById(R.id.mainCandidateBtn);
 
         final Fragment districtFragment = DistrictListFragment.getInstance();
-        districtBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        districtBtn.setOnClickListener(v -> {
+            adInstance.showAd(getContext());
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.mainContainer, districtFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+
+        final Fragment partyListFragment = PartyListFragment.getInstance();
+        partyBtn.setOnClickListener(v -> {
+            NetworkChecker.setup(getContext());
+            if (!NetworkChecker.checkOn()){
+                NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    }
+                }).show();
+            } else {
                 adInstance.showAd(getContext());
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.mainContainer, districtFragment)
+                        .replace(R.id.mainContainer, partyListFragment)
                         .addToBackStack(null)
                         .commit();
             }
         });
 
-
-        final Fragment partyListFragment = PartyListFragment.getInstance();
-        partyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NetworkChecker.setup(getContext());
-                if (!NetworkChecker.checkOn()){
-                    NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        }
-                    }).show();
-                } else {
-                    adInstance.showAd(getContext());
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.mainContainer, partyListFragment)
-                            .addToBackStack(null)
-                            .commit();
-            }}
-        });
-
         final Fragment searchCandidateFragment = SearchCandidateFragment.getInstance();
-        candidateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adInstance.showAd(getContext());
-                NetworkChecker.setup(getContext());
-                if (!NetworkChecker.checkOn()){
-                    NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        }
-                    }).show();
-                } else {
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.mainContainer, searchCandidateFragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
+        candidateBtn.setOnClickListener(v -> {
+            adInstance.showAd(getContext());
+            NetworkChecker.setup(getContext());
+            if (!NetworkChecker.checkOn()){
+                NetworkChecker.alert(getContext(), "확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    }
+                }).show();
+            } else {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.mainContainer, searchCandidateFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
-        guideBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ViewPager)getActivity().findViewById(R.id.viewPager)).setCurrentItem(0);
-            }
-        });
+        guideBtn.setOnClickListener(v -> ((ViewPager)getActivity().findViewById(R.id.viewPager)).setCurrentItem(0));
 
         return rootView;
     }
-
-//    @Override
-//    public void onBack() {
-//        MainActivity activity = (MainActivity) getActivity();
-//        activity.setOnKeyBackPressedListener();
-//        activity.onBackPressed();
-//    }
 }

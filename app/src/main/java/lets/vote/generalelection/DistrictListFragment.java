@@ -257,6 +257,11 @@ public class DistrictListFragment extends Fragment implements MainActivity.onKey
 
         districtAdapter.notifyDataSetChanged();
 
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.setOnKeyBackPressedListener(null);
+        }
+
         recyclerView = null;
     }
 
@@ -268,8 +273,13 @@ public class DistrictListFragment extends Fragment implements MainActivity.onKey
             goToSiList();
         } else {
             MainActivity activity = (MainActivity) getActivity();
-            activity.setOnKeyBackPressedListener(null);
-            activity.onBackPressed();
+            if (activity != null) {
+                activity.setOnKeyBackPressedListener(null);
+                activity.onBackPressed();
+            }
+//            else if (((MainActivity) mContext) != null) {
+//                ((MainActivity) mContext).onBackPressed();
+//            }
         }
     }
 

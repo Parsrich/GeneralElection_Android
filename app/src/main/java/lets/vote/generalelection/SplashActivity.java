@@ -27,6 +27,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import java.util.List;
 import java.util.Map;
 
+import static lets.vote.generalelection.Util.print;
+
 public class SplashActivity extends AppCompatActivity {
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private static SharedPreferences sharedPreferences;
@@ -44,12 +46,7 @@ public class SplashActivity extends AppCompatActivity {
             Log.d("test", "### 연결 " );
             dataSetting();
         }else {
-            NetworkChecker.alert(this, "확인", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            }).show();
+            NetworkChecker.alert(this, "확인", (dialog, which) -> finish()).show();
         }
     }
 
@@ -63,50 +60,72 @@ public class SplashActivity extends AppCompatActivity {
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
 
         mFirebaseRemoteConfig.fetchAndActivate()
-                .addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Boolean> task) {
+                .addOnCompleteListener(this, task -> {
 
-                        boolean isUpToDated = checkApplicationVersion();
-                        if (!isUpToDated) {
-                            Log.d("test", "앱 최신아님 :" + mFirebaseRemoteConfig.getString("android_app_version"));
-                            return;
-                        }
+//                    boolean isUpToDated = checkApplicationVersion();
+//                    if (!isUpToDated) {
+//                        Log.d("test", "앱 최신아님 :" + mFirebaseRemoteConfig.getString("android_app_version"));
+//                        return;
+//                    }
 
-                        Log.d("test", "android_db_version: " +mFirebaseRemoteConfig.getString("android_db_version"));
-                        int getVersion = 1;
-                        if (!mFirebaseRemoteConfig.getString("android_db_version").equals("")){
-                            getVersion = Integer.parseInt(mFirebaseRemoteConfig.getString("android_db_version"));
-                        }
+                    Log.d("test", "android_db_version: " +mFirebaseRemoteConfig.getString("android_db_version"));
+                    int getVersion = 1;
+                    if (!mFirebaseRemoteConfig.getString("android_db_version").equals("")){
+                        getVersion = Integer.parseInt(mFirebaseRemoteConfig.getString("android_db_version"));
+                    }
 
-                        int localVersion = sharedPreferences.getInt("dbVersion",-1);
-                        if (localVersion == -1 ){
+                    int localVersion = sharedPreferences.getInt("dbVersion",-1);
+                    if (localVersion == -1 ){
 
-                            getData();
-                            sharedPreferences.edit().putInt("dbVersion",getVersion).commit();
-                            Log.d("test", "최초" );
-                        } else if ( getVersion != localVersion ){
-                            //다르면 처리하고
+                        getData();
+                        sharedPreferences.edit().putInt("dbVersion",getVersion).commit();
+                        Log.d("test", "최초" );
+                    } else if ( getVersion != localVersion ){
+                        //다르면 처리하고
 ////                            CandidateDBHelper helper=CandidateDBHelper.getInstance(getApplicationContext());
-                            SQLiteDatabase db=CandidateDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
-                            db.execSQL(CandidateContract.SQL_DELETE_ENTRIES);
-                            db.execSQL(CandidateContract.SQL_CREATE_ENTRIES);
-                            getData();
-                            sharedPreferences.edit().putInt("dbVersion",getVersion).commit();
-                            Log.d("test", "다름" );
-                        } else {
-                            bar.setVisibility(View.GONE);
-                            Log.d("test", "같음" );
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
+                        SQLiteDatabase db=CandidateDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
+                        db.execSQL(CandidateContract.SQL_DELETE_ENTRIES);
+                        db.execSQL(CandidateContract.SQL_CREATE_ENTRIES);
+                        getData();
+                        sharedPreferences.edit().putInt("dbVersion",getVersion).commit();
+                        Log.d("test", "다름" );
+                    } else {
+                        bar.setVisibility(View.GONE);
+                        Log.d("test", "같음" );
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
     }
 
+//    boolean isAppUpdated() {
+//        String[] versionsLocal = BuildConfig.VERSION_NAME.split(".");
+//        String[] versionsRemote = mFirebaseRemoteConfig.getString("android_app_version").split(".");
+//        print(versionsLocal + "");
+//        print(versionsRemote + "");
+//        int[] versionLocalIntegers = new int[3];
+//        int[] versionRemoteIntegers = new int[3];
+//        for (int i=0; i<3; i++) {
+//            int localVersion = Integer.parseInt(versionsLocal[i]);
+//            int remoteVersion = Integer.parseInt(versionsRemote[i]);
+//            versionLocalIntegers[i] = localVersion;
+//            versionRemoteIntegers[i] = remoteVersion;
+//        }
+//
+//        if (versionLocalIntegers[0] < versionRemoteIntegers[0]) {
+//            return true;
+//        } else {
+//            if (versionLocalIntegers[1] < versionRemoteIntegers[1]) {
+//                return true;
+//            }
+//            return versionLocalIntegers[2] < versionRemoteIntegers[2];
+//        }
+//    }
     public boolean checkApplicationVersion() {
         String appVersion = mFirebaseRemoteConfig.getString("android_app_version");
+
+//        if (isAppUpdated()) {
         if (!BuildConfig.VERSION_NAME.equals(appVersion) ) {
             // 확인
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashActivity.this, R.style.DialogStyle));

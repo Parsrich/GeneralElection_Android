@@ -147,7 +147,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (mOnKeyBackPressedListener != null) {
-            mOnKeyBackPressedListener.onBack();
+            /// 이렇게 하나만 특정해서 하면 안되는데 일단 급하니까...ㅠㅠ
+            if (tabs.getSelectedTabPosition() == 1 && getSupportFragmentManager().findFragmentById(R.id.mainContainer) instanceof DistrictListFragment)
+                mOnKeyBackPressedListener.onBack();
+            else
+                super.onBackPressed();
+
             return;
         }
 
