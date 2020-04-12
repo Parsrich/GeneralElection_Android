@@ -140,6 +140,11 @@ public class PartyDetailFragment extends Fragment {
                 .with(getContext())
                 .load(drawableId)
                 .into(partyLogo);
+        if(partyName.equals("가자!평화인권당")){
+            partyLogo.setBackgroundColor(Color.parseColor("#65A032"));
+        }else{
+            partyLogo.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
 
 
         partyDetailName.setText(partyName);
