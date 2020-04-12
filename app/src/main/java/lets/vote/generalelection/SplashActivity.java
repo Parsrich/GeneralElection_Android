@@ -62,11 +62,11 @@ public class SplashActivity extends AppCompatActivity {
         mFirebaseRemoteConfig.fetchAndActivate()
                 .addOnCompleteListener(this, task -> {
 
-//                    boolean isUpToDated = checkApplicationVersion();
-//                    if (!isUpToDated) {
-//                        Log.d("test", "앱 최신아님 :" + mFirebaseRemoteConfig.getString("android_app_version"));
-//                        return;
-//                    }
+                    boolean isUpToDated = checkApplicationVersion();
+                    if (!isUpToDated) {
+                        Log.d("test", "앱 최신아님 :" + mFirebaseRemoteConfig.getString("android_app_version"));
+                        return;
+                    }
 
                     Log.d("test", "android_db_version: " +mFirebaseRemoteConfig.getString("android_db_version"));
                     int getVersion = 1;
