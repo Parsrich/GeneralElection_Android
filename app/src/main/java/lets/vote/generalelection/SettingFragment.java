@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class SettingFragment extends Fragment {
     private static SettingFragment instance;
-    private static SettingAdapter adapter;
-    private static RecyclerView recyclerView;
+    private SettingAdapter adapter;
+    private RecyclerView recyclerView;
     public SettingFragment() {
         // Required empty public constructor
     }
@@ -56,7 +56,7 @@ public class SettingFragment extends Fragment {
         settingList.add("공지사항");
         settingList.add("문의하기");
         settingList.add("오픈소스 라이선스");
-        settingList.add("앱 버전: 1.0.0");
+        settingList.add("앱 버전: " + BuildConfig.VERSION_NAME);
         adapter = new SettingAdapter(settingList);
 
         recyclerView.setAdapter(adapter);
